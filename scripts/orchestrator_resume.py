@@ -34,6 +34,10 @@ print(f"Task state   : {active['status'] if active else 'UNKNOWN'}")
 print(f"Context gate : {state['gates']['context_gate']}")
 print(f"Branch       : {git('branch', '--show-current')}")
 print(f"HEAD         : {git('rev-parse', '--short', 'HEAD')}")
+print("\nTask graph:")
+for task in plan["tasks"]:
+    dependencies = ", ".join(task.get("depends_on", [])) or "none"
+    print(f"  - {task['id']}: {task['status']} (depends on: {dependencies})")
 print("\nCanonical state:")
 for path in (
     ".agent/PLAN.json",
