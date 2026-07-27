@@ -1,0 +1,23 @@
+name: Wed3s quality gates
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Orchestrator structure/secret checks
+        run: python scripts/orchestrator_verify.py
+      # Add setup-node/corepack/pnpm install only after package.json and lockfile
+      # are created in P03. Pin action SHAs in security-hardening phase.

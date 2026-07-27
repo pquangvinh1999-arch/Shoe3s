@@ -1,0 +1,536 @@
+{
+  "schema_version": 1,
+  "tasks": [
+    {
+      "id": "P00-T01",
+      "phase": "P00",
+      "title": "Create branch and baseline snapshot",
+      "status": "todo",
+      "depends_on": [],
+      "read": [
+        "AGENTS.md",
+        "docs/orchestrator/00_REPO_REVIEW.md"
+      ],
+      "actions": [
+        "Run git status and record dirty files.",
+        "Create branch feat/wed3s-3d-booking-orchestrated.",
+        "Record Node/package manager/tool availability.",
+        "Capture current file tree, commit SHA, routes, deploy config and asset existence."
+      ],
+      "acceptance": [
+        "No source behavior changed.",
+        "orchestrator/evidence/P00-T01-baseline.md exists.",
+        "Active branch and commit are recorded in STATE.json."
+      ],
+      "verify": [
+        "git status --short",
+        "git rev-parse HEAD",
+        "git ls-files"
+      ]
+    },
+    {
+      "id": "P00-T02",
+      "phase": "P00",
+      "title": "Behavior and route regression baseline",
+      "status": "todo",
+      "depends_on": [
+        "P00-T01"
+      ],
+      "read": [
+        "index.html",
+        "js/app.js",
+        "functions/api/telegram.js"
+      ],
+      "actions": [
+        "Document booking, login, admin, POS, QR, invoice and data flows.",
+        "Create smoke tests around ?page=order and admin route without changing output.",
+        "Record current network requests and 404 assets."
+      ],
+      "acceptance": [
+        "Baseline tests reproduce current routes.",
+        "Broken current behavior is marked baseline-known, not silently fixed.",
+        "Evidence includes screenshots/traces or exact commands."
+      ],
+      "verify": [
+        "Run available local preview",
+        "Run Playwright smoke or documented manual baseline"
+      ]
+    },
+    {
+      "id": "P00-T03",
+      "phase": "P00",
+      "title": "Security, RLS and secret audit",
+      "status": "todo",
+      "depends_on": [
+        "P00-T01"
+      ],
+      "read": [
+        "docs/orchestrator/03_SECURITY.md",
+        "orchestrator/skills/supabase-rls/SKILL.md"
+      ],
+      "actions": [
+        "Inspect Supabase schemas/policies with read-only queries.",
+        "Scan HEAD and git history for secrets.",
+        "List Cloudflare env variable names without values.",
+        "Create threat model and prioritized findings."
+      ],
+      "acceptance": [
+        "No secret value is written to report.",
+        "RLS evidence exists for orders/costs and admin authorization.",
+        "Any historically exposed token is marked for rotation."
+      ],
+      "verify": [
+        "Secret scanner",
+        "Supabase advisors/read-only policy queries"
+      ]
+    },
+    {
+      "id": "P00-T04",
+      "phase": "P00",
+      "title": "Asset and performance inventory",
+      "status": "todo",
+      "depends_on": [
+        "P00-T01"
+      ],
+      "read": [
+        "css/app.css",
+        "js/app.js",
+        "docs/orchestrator/05_PERFORMANCE_BUDGET.md"
+      ],
+      "actions": [
+        "Inventory images, sizes, duplicate/deleted references and licenses.",
+        "Measure initial bundle/network/Lighthouse.",
+        "Record device/browser test matrix."
+      ],
+      "acceptance": [
+        "Asset manifest has source/license/status.",
+        "Current performance baseline is stored without comparing against guessed values."
+      ],
+      "verify": [
+        "Network HAR or equivalent",
+        "Lighthouse baseline"
+      ]
+    },
+    {
+      "id": "P01-T01",
+      "phase": "P01",
+      "title": "Extract typed service catalog",
+      "status": "todo",
+      "depends_on": [
+        "P00-T02"
+      ],
+      "read": [
+        "docs/orchestrator/04_DATA_API_CONTRACTS.md"
+      ],
+      "actions": [
+        "Create stable service IDs and one catalog.",
+        "Replace duplicate maps through compatibility adapters.",
+        "Add tests proving current labels/prices/status behavior."
+      ],
+      "acceptance": [
+        "No duplicated authoritative price map.",
+        "Existing booking/POS labels and totals remain compatible."
+      ],
+      "verify": [
+        "Unit tests for every service and total"
+      ]
+    },
+    {
+      "id": "P01-T02",
+      "phase": "P01",
+      "title": "Order schema and compatibility adapter",
+      "status": "todo",
+      "depends_on": [
+        "P01-T01"
+      ],
+      "read": [
+        "docs/orchestrator/04_DATA_API_CONTRACTS.md"
+      ],
+      "actions": [
+        "Define Zod request/domain schemas.",
+        "Add string-to-items and items-to-legacy-string adapters.",
+        "Define status constants without changing persisted values."
+      ],
+      "acceptance": [
+        "Malformed input rejected.",
+        "Legacy service strings round-trip for supported values."
+      ],
+      "verify": [
+        "Property/unit tests",
+        "Typecheck"
+      ]
+    },
+    {
+      "id": "P02-T01",
+      "phase": "P02",
+      "title": "Create secure order API",
+      "status": "todo",
+      "depends_on": [
+        "P01-T02",
+        "P00-T03"
+      ],
+      "read": [
+        "orchestrator/skills/secure-order-api/SKILL.md",
+        "orchestrator/skills/cloudflare-pages-functions/SKILL.md"
+      ],
+      "actions": [
+        "Implement POST /api/orders.",
+        "Validate content type/body/schema/Turnstile.",
+        "Compute pricing and status server-side.",
+        "Insert idempotently and return minimal response."
+      ],
+      "acceptance": [
+        "Client-supplied total/status ignored or rejected.",
+        "Duplicate retry does not create duplicate order.",
+        "Negative contract tests pass."
+      ],
+      "verify": [
+        "Contract tests",
+        "Replay/idempotency test",
+        "Invalid Turnstile test"
+      ]
+    },
+    {
+      "id": "P02-T02",
+      "phase": "P02",
+      "title": "Harden Telegram notification",
+      "status": "todo",
+      "depends_on": [
+        "P02-T01"
+      ],
+      "read": [
+        "functions/api/telegram.js",
+        "docs/orchestrator/03_SECURITY.md"
+      ],
+      "actions": [
+        "Move notification behind trusted order creation.",
+        "Escape Telegram HTML and limit fields.",
+        "Check Telegram response and apply timeout.",
+        "Separate notification failure from order transaction."
+      ],
+      "acceptance": [
+        "HTML injection test is safe.",
+        "Order still succeeds with notification failure and failure is observable."
+      ],
+      "verify": [
+        "Unit tests for escape",
+        "Mock Telegram failure"
+      ]
+    },
+    {
+      "id": "P02-T03",
+      "phase": "P02",
+      "title": "Cut public booking over to API",
+      "status": "todo",
+      "depends_on": [
+        "P02-T01",
+        "P02-T02"
+      ],
+      "read": [
+        "js/app.js",
+        "docs/orchestrator/04_DATA_API_CONTRACTS.md"
+      ],
+      "actions": [
+        "Replace direct public Supabase insert with API call.",
+        "Add idempotency UI and clear error states.",
+        "Run shadow/canary on preview."
+      ],
+      "acceptance": [
+        "Public route creates valid order through API.",
+        "Network retry does not duplicate.",
+        "Admin sees compatible record."
+      ],
+      "verify": [
+        "Playwright booking E2E",
+        "Supabase record check"
+      ]
+    },
+    {
+      "id": "P02-T04",
+      "phase": "P02",
+      "title": "RLS lockdown after cutover",
+      "status": "todo",
+      "depends_on": [
+        "P02-T03"
+      ],
+      "read": [
+        "orchestrator/skills/supabase-rls/SKILL.md",
+        "orchestrator/templates/supabase/002_lockdown_after_cutover.sql"
+      ],
+      "actions": [
+        "Apply reviewed migration in preview.",
+        "Revoke anonymous direct order writes.",
+        "Verify admin authorization and negative cases.",
+        "Prepare production migration and rollback/forward fix."
+      ],
+      "acceptance": [
+        "Anon direct insert/select/update/delete denied.",
+        "Public API still works.",
+        "Authorized admin workflows pass."
+      ],
+      "verify": [
+        "RLS matrix tests",
+        "Supabase advisors"
+      ]
+    },
+    {
+      "id": "P03-T01",
+      "phase": "P03",
+      "title": "Scaffold React/Vite/TypeScript shell",
+      "status": "todo",
+      "depends_on": [
+        "P02-T04"
+      ],
+      "read": [
+        "docs/orchestrator/01_TARGET_ARCHITECTURE.md"
+      ],
+      "actions": [
+        "Create workspace/app shell and pinned lockfile.",
+        "Preserve Cloudflare build/deploy constraints.",
+        "Add route adapter for ?page=order and admin."
+      ],
+      "acceptance": [
+        "Both routes load in preview.",
+        "Booking shell does not load admin chart/xlsx chunk.",
+        "Old app remains rollbackable."
+      ],
+      "verify": [
+        "Build",
+        "Route tests",
+        "Bundle report"
+      ]
+    },
+    {
+      "id": "P03-T02",
+      "phase": "P03",
+      "title": "Design system and accessible booking shell",
+      "status": "todo",
+      "depends_on": [
+        "P03-T01"
+      ],
+      "read": [
+        "docs/orchestrator/02_3D_UX_SPEC.md"
+      ],
+      "actions": [
+        "Implement tokens, typography, layout, CTA and booking wizard without WebGL.",
+        "Add reduced motion and keyboard/focus behavior.",
+        "Use real catalog/API."
+      ],
+      "acceptance": [
+        "Complete booking works with WebGL disabled.",
+        "Keyboard/mobile/a11y smoke pass.",
+        "No untrusted innerHTML."
+      ],
+      "verify": [
+        "Playwright no-WebGL E2E",
+        "axe"
+      ]
+    },
+    {
+      "id": "P04-T01",
+      "phase": "P04",
+      "title": "Acquire and license production shoe asset",
+      "status": "todo",
+      "depends_on": [
+        "P03-T02",
+        "P00-T04"
+      ],
+      "read": [
+        "orchestrator/skills/shoe-material-transition/SKILL.md"
+      ],
+      "actions": [
+        "Use owner-provided or clearly licensed model.",
+        "Record source/license/attribution.",
+        "Create dirty mask, clean materials and LOD plan."
+      ],
+      "acceptance": [
+        "License record exists.",
+        "No unverified asset committed."
+      ],
+      "verify": [
+        "Asset manifest review"
+      ]
+    },
+    {
+      "id": "P04-T02",
+      "phase": "P04",
+      "title": "Optimize GLB and textures",
+      "status": "todo",
+      "depends_on": [
+        "P04-T01"
+      ],
+      "read": [
+        "docs/orchestrator/05_PERFORMANCE_BUDGET.md"
+      ],
+      "actions": [
+        "Run glTF Transform inspect/dedupe/prune/texture compression.",
+        "Generate low/medium/high variants and poster.",
+        "Record triangles/draw calls/transfer sizes."
+      ],
+      "acceptance": [
+        "Assets meet budget or exception has evidence.",
+        "Fallback poster exists."
+      ],
+      "verify": [
+        "Automated asset budget script",
+        "Visual diff"
+      ]
+    },
+    {
+      "id": "P05-T01",
+      "phase": "P05",
+      "title": "Implement adaptive 3D scene",
+      "status": "todo",
+      "depends_on": [
+        "P04-T02"
+      ],
+      "read": [
+        "orchestrator/skills/adaptive-webgl/SKILL.md",
+        "docs/orchestrator/02_3D_UX_SPEC.md"
+      ],
+      "actions": [
+        "Lazy-load canvas after poster.",
+        "Implement quality tiers, pause/offscreen and context recovery.",
+        "Implement dirty-to-clean shader/timeline."
+      ],
+      "acceptance": [
+        "No-WebGL path unchanged.",
+        "Tier downgrade works.",
+        "Scene disposes correctly."
+      ],
+      "verify": [
+        "Performance profile",
+        "Context loss test",
+        "Reduced motion test"
+      ]
+    },
+    {
+      "id": "P05-T02",
+      "phase": "P05",
+      "title": "Connect story, services and booking",
+      "status": "todo",
+      "depends_on": [
+        "P05-T01"
+      ],
+      "read": [
+        "docs/orchestrator/02_3D_UX_SPEC.md"
+      ],
+      "actions": [
+        "Link camera/material progress to narrative.",
+        "Focus service cards without blocking input.",
+        "Stop heavy motion while form active."
+      ],
+      "acceptance": [
+        "Form conversion path remains primary.",
+        "Animation never traps scroll/focus.",
+        "Mobile sticky CTA works."
+      ],
+      "verify": [
+        "E2E mobile/desktop",
+        "User-flow recording"
+      ]
+    },
+    {
+      "id": "P06-T01",
+      "phase": "P06",
+      "title": "Migrate admin modules incrementally",
+      "status": "todo",
+      "depends_on": [
+        "P05-T02"
+      ],
+      "read": [
+        "docs/orchestrator/01_TARGET_ARCHITECTURE.md"
+      ],
+      "actions": [
+        "Migrate one module per PR behind compatibility adapter.",
+        "Preserve POS/receipt/QR/report behavior.",
+        "Add authorization to write paths."
+      ],
+      "acceptance": [
+        "Each migrated module has regression tests.",
+        "Old module remains rollbackable until stable."
+      ],
+      "verify": [
+        "Admin E2E",
+        "Receipt print test",
+        "Data reconciliation"
+      ]
+    },
+    {
+      "id": "P07-T01",
+      "phase": "P07",
+      "title": "Full quality and security gate",
+      "status": "todo",
+      "depends_on": [
+        "P06-T01"
+      ],
+      "read": [
+        "orchestrator/skills/validation-gates/SKILL.md"
+      ],
+      "actions": [
+        "Run unit/contract/E2E/a11y/performance/security/mobile matrix.",
+        "Fix blocking defects only.",
+        "Create release evidence."
+      ],
+      "acceptance": [
+        "All release gates pass or approved exceptions documented.",
+        "No critical/high unresolved security issue."
+      ],
+      "verify": [
+        "python scripts/orchestrator_verify.py --release"
+      ]
+    },
+    {
+      "id": "P08-T01",
+      "phase": "P08",
+      "title": "Preview, canary and production cutover",
+      "status": "todo",
+      "depends_on": [
+        "P07-T01"
+      ],
+      "read": [
+        "orchestrator/RELEASE_RUNBOOK.md"
+      ],
+      "actions": [
+        "Deploy preview.",
+        "Run smoke and canary.",
+        "Rehearse rollback.",
+        "Deploy production and verify monitoring."
+      ],
+      "acceptance": [
+        "Production routes and booking confirmed.",
+        "Rollback path verified.",
+        "No secret in build output."
+      ],
+      "verify": [
+        "Production smoke",
+        "Order canary",
+        "Web Vitals/Function logs"
+      ]
+    },
+    {
+      "id": "P09-T01",
+      "phase": "P09",
+      "title": "Handover and closeout",
+      "status": "todo",
+      "depends_on": [
+        "P08-T01"
+      ],
+      "read": [
+        "orchestrator/HANDOFF.md"
+      ],
+      "actions": [
+        "Write runbook, architecture, env variable names, known limitations and backlog.",
+        "Reconcile task/evidence/decision records.",
+        "Tag release."
+      ],
+      "acceptance": [
+        "A new engineer can resume from docs without reading chat history.",
+        "No secret is present in handover."
+      ],
+      "verify": [
+        "Fresh-session resume test"
+      ]
+    }
+  ]
+}

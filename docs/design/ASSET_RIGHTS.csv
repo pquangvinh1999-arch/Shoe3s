@@ -1,0 +1,3 @@
+asset,path,source,rights_status,allowed_usage,production_action
+before-after-concept,docs/design/reference/before-after-concept.jpg,user-uploaded,unverified,reference-only,replace-or-confirm-license
+3s-logo-concept,docs/design/reference/3s-logo-concept.png,user-uploaded,unverified,reference-only,vectorize-original-and-confirm-rights

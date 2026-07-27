@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "project": "Wed3s 3D Booking Upgrade",
+  "repo": "pquangvinh1999-arch/Wed3s",
+  "baseline_branch": "main",
+  "baseline_commit_reviewed": "071ae03b7a4bcb8508217d1bdbe312ae86d8ecbd",
+  "current_phase": "P00",
+  "active_task": "P00-T01",
+  "status": "ready",
+  "completed_tasks": [],
+  "blocked_tasks": [],
+  "last_checkpoint_utc": null,
+  "active_branch": null,
+  "evidence": {},
+  "known_risks": [
+    "Public browser currently appears to construct total/status and insert orders directly.",
+    "Untrusted data is interpolated into innerHTML/receipt/Telegram HTML.",
+    "Service catalog and prices are duplicated.",
+    "Slideshow references assets that may no longer exist.",
+    "Supabase RLS and production environment were not verified by static review."
+  ],
+  "next_action": "Create a dedicated branch and capture a reproducible baseline before modifying behavior."
+}
