@@ -1,3 +1,7 @@
+> Archive package manifest only. These hashes describe the original
+> bootstrap package and must not be used as live repository integrity
+> hashes after installation.
+
 # MANIFEST — Shoe3s Work + Codex Orchestrator v2
 
 - Generated: 2026-07-27T01:54:02.026109+00:00

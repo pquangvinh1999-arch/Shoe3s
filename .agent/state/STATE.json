@@ -3,7 +3,7 @@
   "project": "Shoe3s 3D Booking Upgrade",
   "repository": "pquangvinh1999-arch/Shoe3s",
   "active_actor": null,
-  "active_task": "P00-T01",
+  "active_task": "P00-T02",
   "phase": "context-initialization",
   "gates": {
     "context_gate": "pending",
@@ -14,12 +14,13 @@
     "release_candidate_gate": "blocked",
     "deployment_gate": "blocked"
   },
-  "last_checkpoint": null,
-  "last_commit": null,
+  "last_checkpoint": "2026-07-27T05:29:58.962632+00:00",
+  "last_commit": "90ccedc18f76e831d0b54122148e349543665771",
   "risk_level": "high",
   "notes": [
-    "Application source is missing; import baseline application source before implementation.",
-    "Context gate remains pending until the imported source is audited.",
-    "Canonical orchestration state is stored only under .agent/."
+    "P00-T01 bootstrap completed.",
+    "P00-T02 must import the Wed3s baseline without behavior changes.",
+    "Context Gate remains pending until P00-T03 finishes.",
+    "Implementation remains prohibited."
   ]
 }

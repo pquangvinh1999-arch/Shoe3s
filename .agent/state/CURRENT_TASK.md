@@ -1,12 +1,21 @@
 # Current Task
 
-- Task ID: `P00-T01`
-- Owner: `project-orchestrator`
-- Status: `blocked`
-- Blocker: Application source is missing from the Shoe3s repository.
-- Goal: Complete and validate the canonical bootstrap orchestration environment.
-- Allowed changes: agent/orchestrator documentation, state, evidence, and orchestration scripts only.
-- Forbidden changes: application code, frontend dependencies, database, migrations, deployment, and Cloudflare production config.
+- Task ID: `P00-T02`
+- Owner: `repo-archaeologist`
+- Status: `active`
+- Goal: Import the Wed3s application baseline into Shoe3s.
+- Allowed changes:
+  - clone/read Wed3s main;
+  - copy safe tracked baseline files;
+  - inventory and secret scan;
+  - evidence and canonical state updates.
+- Forbidden changes:
+  - refactor;
+  - application behavior changes;
+  - dependency upgrades;
+  - database or migration changes;
+  - production configuration changes;
+  - deployment.
+- Required evidence: `.agent/evidence/P00-T02/`
 - Gate state: `context_gate = pending`; implementation is prohibited.
-- Required evidence: `.agent/evidence/P00-T01/context-audit.md`.
-- Next action: Import baseline application source.
+- Next action: Clone and import `pquangvinh1999-arch/Wed3s` main using the approved baseline-import procedure.

@@ -93,15 +93,47 @@
       "title": "Initialize canonical agent environment",
       "depends_on": [],
       "owner": "project-orchestrator",
-      "status": "blocked",
+      "status": "done",
       "code_allowed": false
     },
     {
       "id": "P00-T02",
       "step": 2,
-      "title": "Audit and approve project context",
+      "title": "Import Wed3s application baseline",
       "depends_on": [
         "P00-T01"
+      ],
+      "owner": "repo-archaeologist",
+      "status": "active",
+      "code_allowed": false,
+      "allowed_changes": [
+        "clone and read Wed3s main",
+        "copy safe baseline source files",
+        "create source inventory",
+        "run secret scan",
+        "write evidence",
+        "update canonical agent state"
+      ],
+      "forbidden_changes": [
+        "application refactor",
+        "booking behavior changes",
+        "dependency upgrades",
+        "database changes",
+        "migrations",
+        "production configuration changes",
+        "deployment"
+      ],
+      "required_evidence": [
+        ".agent/evidence/P00-T02/"
+      ],
+      "next_action": "Clone and import pquangvinh1999-arch/Wed3s main according to the approved baseline-import procedure."
+    },
+    {
+      "id": "P00-T03",
+      "step": 2,
+      "title": "Audit and approve project context",
+      "depends_on": [
+        "P00-T02"
       ],
       "owner": "product-context-guardian",
       "status": "blocked",
@@ -112,7 +144,7 @@
       "step": 3,
       "title": "Research repo, official docs and best practices",
       "depends_on": [
-        "P00-T02"
+        "P00-T03"
       ],
       "owner": "repo-archaeologist",
       "status": "blocked",
