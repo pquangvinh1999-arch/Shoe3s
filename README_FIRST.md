@@ -1,6 +1,6 @@
-# Wed3s Work + Codex Orchestrator v2
+# Shoe3s Work + Codex Orchestrator v2
 
-1. Copy all files into the root of `pquangvinh1999-arch/Wed3s` without deleting the existing `.agents/` AG Kit.
+1. Copy all files into the root of `pquangvinh1999-arch/Shoe3s` without deleting the existing `.agents/` AG Kit.
 2. Keep both systems:
    - Existing `.agents/`: legacy AG Kit knowledge.
    - New `.agent/`: project-specific canonical orchestration.

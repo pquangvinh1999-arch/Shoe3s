@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, re, shutil, subprocess, sys
+
+import argparse
+import json
+import re
+import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -10,12 +16,22 @@ args = parser.parse_args()
 
 failures = []
 required = [
-    "AGENTS.md", "orchestrator/STATE.json", "orchestrator/TASKS.json",
-    "orchestrator/NEXT.md", "orchestrator/CHECKLIST.md"
+    "AGENTS.md",
+    ".agent/PLAN.json",
+    ".agent/state/STATE.json",
+    ".agent/state/CURRENT_TASK.md",
+    ".agent/CHECKLIST.md",
+    ".agent/evidence",
 ]
 for rel in required:
     if not (ROOT / rel).exists():
         failures.append(f"missing {rel}")
+
+for rel in (".agent/PLAN.json", ".agent/state/STATE.json"):
+    try:
+        json.loads((ROOT / rel).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        failures.append(f"invalid {rel}: {exc}")
 
 secret_patterns = [
     re.compile(r"(?m)^SUPABASE_SERVICE_ROLE_KEY[ \t]*=[ \t]*[^ \t\r\n#]+"),
@@ -23,30 +39,32 @@ secret_patterns = [
     re.compile(r"-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----"),
 ]
 for path in ROOT.rglob("*"):
-    if not path.is_file() or ".git" in path.parts or path.suffix.lower() in {".png",".jpg",".jpeg",".webp",".avif",".glb",".zip"}:
+    if not path.is_file() or ".git" in path.parts or path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".avif", ".glb", ".zip"}:
         continue
     if path.stat().st_size > 2_000_000:
         continue
     try:
         text = path.read_text(encoding="utf-8")
-    except Exception:
+    except (OSError, UnicodeDecodeError):
         continue
-    for pat in secret_patterns:
-        if pat.search(text):
-            failures.append(f"possible secret in {path.relative_to(ROOT)}: {pat.pattern}")
+    for pattern in secret_patterns:
+        if pattern.search(text):
+            failures.append(f"possible secret in {path.relative_to(ROOT)}: {pattern.pattern}")
 
-def run_if_script(name: str):
-    pkg = ROOT / "package.json"
-    if not pkg.exists():
+
+def run_if_script(name: str) -> None:
+    package = ROOT / "package.json"
+    if not package.exists():
         return
-    data = json.loads(pkg.read_text(encoding="utf-8"))
+    data = json.loads(package.read_text(encoding="utf-8"))
     if name not in data.get("scripts", {}):
         return
     runner = "pnpm" if shutil.which("pnpm") else "npm"
-    cmd = [runner, "run", name] if runner == "npm" else [runner, name]
-    result = subprocess.run(cmd, cwd=ROOT)
+    command = [runner, name] if runner == "pnpm" else [runner, "run", name]
+    result = subprocess.run(command, cwd=ROOT, check=False)
     if result.returncode:
-        failures.append(f"{' '.join(cmd)} failed")
+        failures.append(f"{' '.join(command)} failed")
+
 
 for script in ["lint", "typecheck", "test", "build"]:
     run_if_script(script)
@@ -56,7 +74,7 @@ if args.release:
 
 if failures:
     print("VERIFY FAILED")
-    for f in failures:
-        print(" -", f)
+    for failure in failures:
+        print(" -", failure)
     sys.exit(1)
 print("VERIFY PASSED")

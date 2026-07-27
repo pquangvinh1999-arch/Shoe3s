@@ -1,6 +1,6 @@
 ---
 name: wed3s-project-orchestrator
-when_to_use: Every multi-step Wed3s task.
+when_to_use: Every multi-step Shoe3s task.
 allowed_tools: Read, Grep, Glob, Bash, Edit, Write, Agent
 ---
 

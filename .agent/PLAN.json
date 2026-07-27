@@ -93,7 +93,7 @@
       "title": "Initialize canonical agent environment",
       "depends_on": [],
       "owner": "project-orchestrator",
-      "status": "active",
+      "status": "blocked",
       "code_allowed": false
     },
     {

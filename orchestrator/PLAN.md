@@ -1,4 +1,4 @@
-# PLAN — Wed3s 3D Booking
+# PLAN — Shoe3s 3D Booking
 
 Task source of truth: `TASKS.json`.
 

@@ -1,4 +1,4 @@
-# Wed3s Design System
+# Shoe3s Design System
 
 Canonical colors, typography and motion are defined in `.agent/MASTER_CONTEXT.md`.
 

@@ -7,7 +7,7 @@ if [[ -z "$COMMAND" ]]; then
 fi
 
 deny() {
-  echo "BLOCKED by Wed3s guardrail: $1" >&2
+  echo "BLOCKED by Shoe3s guardrail: $1" >&2
   exit 64
 }
 

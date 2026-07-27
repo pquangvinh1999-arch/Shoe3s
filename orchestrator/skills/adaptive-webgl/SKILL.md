@@ -1,6 +1,6 @@
 ---
 name: adaptive-webgl
-description: Keep Wed3s 3D smooth through progressive enhancement and runtime downgrade.
+description: Keep Shoe3s 3D smooth through progressive enhancement and runtime downgrade.
 when_to_use: P05 scene/runtime performance.
 allowed-tools: Read, Grep, Glob, Bash, Edit, Write
 ---

@@ -1,4 +1,4 @@
-# Merge into existing Wed3s repo
+# Merge into existing Shoe3s repo
 
 - Create branch: `chore/P00-T01-orchestrator-v2`.
 - Copy package contents into repo root.

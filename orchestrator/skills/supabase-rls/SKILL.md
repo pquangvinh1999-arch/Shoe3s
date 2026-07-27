@@ -1,6 +1,6 @@
 ---
 name: supabase-rls
-description: Audit and stage Supabase RLS for Wed3s.
+description: Audit and stage Supabase RLS for Shoe3s.
 when_to_use: Any schema/policy/auth/data API task.
 allowed-tools: Read, Grep, Glob, Bash, Edit, Write
 ---
