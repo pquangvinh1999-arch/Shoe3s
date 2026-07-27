@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "project": "Wed3s repository audit and implementation planning",
+  "requested_repository": "pquangvinh1999-arch/Shoe3s",
+  "documented_application_repository": "pquangvinh1999-arch/Wed3s",
+  "branch": "main",
+  "baseline_commit": "54b7916cdcc73f4241d46ca9facb785b4e933c57",
+  "active_task": "P00-T01-RESTORE-VERIFIABLE-BASELINE",
+  "completed_stages": [
+    "initialize",
+    "context_review",
+    "research",
+    "planning"
+  ],
+  "gates": {
+    "initialize": "completed_with_integrity_failure",
+    "context_review": "completed_repository_only",
+    "research": "completed_repository_only",
+    "plan": "ready_for_codex_handoff",
+    "implementation": "blocked"
+  },
+  "scope_controls": {
+    "application_code_changed": false,
+    "three_js_installed": false,
+    "database_changed": false,
+    "deployed": false
+  },
+  "blocking_conditions": [
+    "The requested Shoe3s repository does not contain the Wed3s application source described by its documents.",
+    "The canonical .agent package declared by MANIFEST.md is incomplete in Git; MASTER_CONTEXT.md and workflows 01-04 are absent.",
+    "Supabase policies/data and Cloudflare configuration/runtime were not available as repository evidence."
+  ],
+  "evidence_standard": "repository paths and line-addressable statements; documentation claims are not treated as implementation verification",
+  "last_checkpoint_utc": "2026-07-27T00:00:00Z",
+  "next_action": "Codex must complete P00-T01-RESTORE-VERIFIABLE-BASELINE before any application implementation."
+}
