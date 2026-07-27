@@ -1,6 +1,6 @@
 ---
 name: repo-archeology
-description: Map Wed3s code and behavior without changing it.
+description: Map Shoe3s code and behavior without changing it.
 when_to_use: P00, unknown coupling, legacy regressions. NOT for implementation.
 allowed-tools: Read, Grep, Glob, Bash
 ---

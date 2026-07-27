@@ -3,7 +3,7 @@
 Dùng một Work chat mới, mở đúng GitHub project/repository và gửi:
 
 ```text
-Bạn là Project Orchestrator của repo pquangvinh1999-arch/Wed3s.
+Bạn là Project Orchestrator của repo pquangvinh1999-arch/Shoe3s.
 Không code ngay.
 
 1. Đọc AGENT.md, AGENTS.md và toàn bộ `.agent/MASTER_CONTEXT.md`.

@@ -7,7 +7,7 @@
 - Dirty/clean contrast rất rõ, phù hợp hero và conversion.
 - Heading lớn tạo cảm giác quảng cáo mạnh.
 
-Áp dụng cho Wed3s:
+Áp dụng cho Shoe3s:
 - Tạo thanh scrub dọc có thể kéo/keyboard.
 - Một model giày dùng material blend mask từ bẩn sang sạch, tránh render hai scene nặng.
 - Copy thương hiệu nguyên bản, ví dụ “HỒI SINH ĐÔI GIÀY CỦA BẠN”; không sao chép layout/text y hệt.

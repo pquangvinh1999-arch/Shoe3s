@@ -3,7 +3,7 @@
 ## Kiến trúc đề xuất
 
 ```text
-Wed3s/
+Shoe3s/
 ├─ AGENTS.md
 ├─ apps/
 │  └─ web/

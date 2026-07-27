@@ -1,4 +1,4 @@
-# Wed3s — Canonical Project Context
+# Shoe3s — Canonical Project Context
 
 > Đây là nguồn context chuẩn duy nhất cho cả ChatGPT Work và Codex. Không bắt đầu code trước khi hoàn tất bước Context Gate.
 

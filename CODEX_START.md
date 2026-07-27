@@ -3,7 +3,7 @@
 Mở một Codex chat mới trên đúng repo/branch, sau đó gửi:
 
 ```text
-Act as the Wed3s Project Orchestrator.
+Act as the Shoe3s Project Orchestrator.
 Read AGENTS.md, AGENT.md, `.agent/MASTER_CONTEXT.md`, `.agent/state/STATE.json`, CURRENT_TASK.md and DECISIONS.md.
 Run:
 - python scripts/agent_sync.py --check

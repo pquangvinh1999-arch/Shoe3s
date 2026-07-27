@@ -1,6 +1,6 @@
 ---
 name: cloudflare-pages-functions
-description: Implement and deploy Wed3s edge API on Cloudflare Pages Functions.
+description: Implement and deploy Shoe3s edge API on Cloudflare Pages Functions.
 when_to_use: Functions, Turnstile, env, preview or deployment.
 allowed-tools: Read, Grep, Glob, Bash, Edit, Write
 ---

@@ -1,6 +1,6 @@
 ---
 name: validation-gates
-description: Prove Wed3s changes across behavior, security, accessibility and performance.
+description: Prove Shoe3s changes across behavior, security, accessibility and performance.
 when_to_use: Task completion, phase gate, release.
 allowed-tools: Read, Grep, Glob, Bash, Edit, Write
 ---

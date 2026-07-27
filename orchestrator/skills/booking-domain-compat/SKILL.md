@@ -1,6 +1,6 @@
 ---
 name: booking-domain-compat
-description: Centralize catalog/order/status while preserving Wed3s behavior.
+description: Centralize catalog/order/status while preserving Shoe3s behavior.
 when_to_use: P01, service pricing, order schema, POS compatibility.
 allowed-tools: Read, Grep, Glob, Bash, Edit, Write
 ---

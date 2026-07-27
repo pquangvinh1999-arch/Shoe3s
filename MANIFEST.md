@@ -1,4 +1,4 @@
-# MANIFEST — Wed3s Work + Codex Orchestrator v2
+# MANIFEST — Shoe3s Work + Codex Orchestrator v2
 
 - Generated: 2026-07-27T01:54:02.026109+00:00
 - Package file count including this manifest: 178

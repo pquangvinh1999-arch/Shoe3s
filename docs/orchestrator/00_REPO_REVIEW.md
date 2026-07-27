@@ -1,8 +1,8 @@
-# 00 — Review hiện trạng repo Wed3s
+# 00 — Review hiện trạng repo Shoe3s
 
 ## Snapshot đã đọc
 
-- Repo: `pquangvinh1999-arch/Wed3s`
+- Repo: `pquangvinh1999-arch/Shoe3s`
 - Default branch: `main`
 - Kiểu triển khai: static Cloudflare Pages + Pages Function.
 - Frontend: Vanilla HTML/CSS/JS, Tailwind CDN, Chart.js, Font Awesome, Supabase JS, SheetJS.

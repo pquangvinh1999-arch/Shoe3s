@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "project": "Wed3s 3D Booking Upgrade",
-  "repository": "pquangvinh1999-arch/Wed3s",
+  "project": "Shoe3s 3D Booking Upgrade",
+  "repository": "pquangvinh1999-arch/Shoe3s",
   "active_actor": null,
   "active_task": "P00-T01",
   "phase": "context-initialization",
@@ -18,8 +18,8 @@
   "last_commit": null,
   "risk_level": "high",
   "notes": [
-    "Do not code until context gate is approved.",
-    "Public order creation must be secured before visual 3D migration.",
-    "Work and Codex must hand off through committed repository state."
+    "Application source is missing; import baseline application source before implementation.",
+    "Context gate remains pending until the imported source is audited.",
+    "Canonical orchestration state is stored only under .agent/."
   ]
 }
