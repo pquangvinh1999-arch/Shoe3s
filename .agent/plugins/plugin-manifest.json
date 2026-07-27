@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "plugins": [
+    {
+      "id": "github",
+      "required": true,
+      "permissions": [
+        "contents:read-write",
+        "pull_requests:read-write",
+        "actions:read"
+      ]
+    },
+    {
+      "id": "supabase",
+      "required": false,
+      "permissions": [
+        "project-selected",
+        "schema-read",
+        "sql-explicit-approval"
+      ]
+    },
+    {
+      "id": "cloudflare",
+      "required": false,
+      "permissions": [
+        "pages-project-selected",
+        "deploy-explicit-approval",
+        "logs-read"
+      ]
+    },
+    {
+      "id": "browser-qa",
+      "required": false,
+      "permissions": [
+        "preview-url"
+      ]
+    }
+  ],
+  "note": "Declarative requirements only. Installation/authentication happens outside the repository."
+}

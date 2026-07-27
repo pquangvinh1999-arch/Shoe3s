@@ -1,0 +1,323 @@
+{
+  "schema_version": 2,
+  "phases": [
+    {
+      "step": 1,
+      "id": "P00",
+      "name": "Khởi tạo môi trường và context",
+      "goal": "Tạo/kiểm tra `.agent`, AGENT.md, AGENTS.md, state, tools, rules và evidence. Không sửa application code."
+    },
+    {
+      "step": 2,
+      "id": "P01",
+      "name": "Kiểm tra lại tài liệu dự án",
+      "goal": "Đọc toàn bộ context; tìm thiếu, hiểu sai nghiệp vụ, coding style, Design System và rules. Sửa ngay trước code."
+    },
+    {
+      "step": 3,
+      "id": "P02",
+      "name": "Nghiên cứu trước khi code",
+      "goal": "Đọc repo/docs chính thức/best practices, ghi research log, options và sources. Không implement."
+    },
+    {
+      "step": 4,
+      "id": "P03",
+      "name": "Lập kế hoạch triển khai",
+      "goal": "Chia module/task/dependency/roadmap, acceptance tests, risk và rollback."
+    },
+    {
+      "step": 5,
+      "id": "P04",
+      "name": "Điều phối agent thực hiện",
+      "goal": "Gán subagent theo routing, one active task, không đổi kiến trúc ngoài ADR."
+    },
+    {
+      "step": 6,
+      "id": "P05",
+      "name": "Kiểm tra chất lượng trong quá trình",
+      "goal": "Sau mỗi module review logic, convention, performance, security, maintainability và tests."
+    },
+    {
+      "step": 7,
+      "id": "P06",
+      "name": "Báo cáo kết quả",
+      "goal": "Cập nhật done/remaining/decisions/architecture changes/risks/evidence."
+    },
+    {
+      "step": 8,
+      "id": "P07",
+      "name": "Kiểm thử lặp trong phiên mới",
+      "goal": "Dùng chat/agent session mới: reproduce → fix → regression → rerun cho đến gate pass."
+    },
+    {
+      "step": 9,
+      "id": "P08",
+      "name": "Đánh giá độc lập GPT-5.6 và reviewer thứ hai",
+      "goal": "Review immutable commit bằng rubric 100; lưu report ngoài application source trong `reports/`."
+    },
+    {
+      "step": 10,
+      "id": "P09",
+      "name": "Tổng hợp kết quả review",
+      "goal": "Điểm đồng thuận ưu tiên; điểm bất đồng phải kiểm chứng; tạo `LO-TRINH-FIX-*.md` trong project."
+    },
+    {
+      "step": 11,
+      "id": "P10",
+      "name": "Hoàn thiện dự án theo báo cáo",
+      "goal": "Đọc reports + roadmap, sửa issue xác nhận, lặp quality loop đến không còn Critical/High."
+    },
+    {
+      "step": 12,
+      "id": "P11",
+      "name": "Commit, push và kiểm tra GitHub pipeline",
+      "goal": "Push branch/PR, CI/CD green; lỗi thì sửa, commit, push lại."
+    },
+    {
+      "step": 13,
+      "id": "P12",
+      "name": "Release candidate và rollback rehearsal",
+      "goal": "Freeze SHA, test preview, backup/migration dry-run, smoke/E2E, diễn tập rollback trước production."
+    },
+    {
+      "step": 14,
+      "id": "P13",
+      "name": "Deploy Cloudflare",
+      "goal": "Deploy preview/production theo approval, smoke test, monitor, rollback khi trigger."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "P00-T01",
+      "step": 1,
+      "title": "Initialize canonical agent environment",
+      "depends_on": [],
+      "owner": "project-orchestrator",
+      "status": "active",
+      "code_allowed": false
+    },
+    {
+      "id": "P00-T02",
+      "step": 2,
+      "title": "Audit and approve project context",
+      "depends_on": [
+        "P00-T01"
+      ],
+      "owner": "product-context-guardian",
+      "status": "blocked",
+      "code_allowed": false
+    },
+    {
+      "id": "P01-T01",
+      "step": 3,
+      "title": "Research repo, official docs and best practices",
+      "depends_on": [
+        "P00-T02"
+      ],
+      "owner": "repo-archaeologist",
+      "status": "blocked",
+      "code_allowed": false
+    },
+    {
+      "id": "P02-T01",
+      "step": 4,
+      "title": "Create dependency-aware implementation plan",
+      "depends_on": [
+        "P01-T01"
+      ],
+      "owner": "project-orchestrator",
+      "status": "blocked",
+      "code_allowed": false
+    },
+    {
+      "id": "P03-T01",
+      "step": 5,
+      "title": "Secure public order API and server pricing",
+      "depends_on": [
+        "P02-T01"
+      ],
+      "owner": "secure-backend-engineer",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P03-T02",
+      "step": 5,
+      "title": "Prepare and verify Supabase RLS cutover",
+      "depends_on": [
+        "P03-T01"
+      ],
+      "owner": "database-security-auditor",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P03-T03",
+      "step": 5,
+      "title": "Extract shared service catalog and compatibility adapters",
+      "depends_on": [
+        "P03-T01"
+      ],
+      "owner": "domain-architect",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P04-T01",
+      "step": 5,
+      "title": "Create React/Vite shell and route split",
+      "depends_on": [
+        "P03-T03"
+      ],
+      "owner": "domain-architect",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P04-T02",
+      "step": 5,
+      "title": "Implement design system and booking funnel",
+      "depends_on": [
+        "P04-T01"
+      ],
+      "owner": "ux-director",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P04-T03",
+      "step": 5,
+      "title": "Build adaptive 3D dirty-to-clean scene",
+      "depends_on": [
+        "P04-T01",
+        "P04-T02"
+      ],
+      "owner": "three-experience-engineer",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P04-T04",
+      "step": 5,
+      "title": "Add 2D/reduced-motion/device fallbacks",
+      "depends_on": [
+        "P04-T03"
+      ],
+      "owner": "three-experience-engineer",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P05-T01",
+      "step": 6,
+      "title": "Module quality gates and remediation",
+      "depends_on": [
+        "P03-T02",
+        "P04-T04"
+      ],
+      "owner": "test-engineer",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P06-T01",
+      "step": 7,
+      "title": "Produce implementation status report",
+      "depends_on": [
+        "P05-T01"
+      ],
+      "owner": "project-orchestrator",
+      "status": "blocked",
+      "code_allowed": false
+    },
+    {
+      "id": "P07-T01",
+      "step": 8,
+      "title": "Run fresh-session iterative QA loop",
+      "depends_on": [
+        "P06-T01"
+      ],
+      "owner": "test-engineer",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P08-T01",
+      "step": 9,
+      "title": "GPT-5.6 independent review",
+      "depends_on": [
+        "P07-T01"
+      ],
+      "owner": "independent-review-coordinator",
+      "status": "blocked",
+      "code_allowed": false
+    },
+    {
+      "id": "P08-T02",
+      "step": 9,
+      "title": "Second-model independent review",
+      "depends_on": [
+        "P07-T01"
+      ],
+      "owner": "independent-review-coordinator",
+      "status": "blocked",
+      "code_allowed": false
+    },
+    {
+      "id": "P09-T01",
+      "step": 10,
+      "title": "Consensus and verified fix roadmap",
+      "depends_on": [
+        "P08-T01",
+        "P08-T02"
+      ],
+      "owner": "independent-review-coordinator",
+      "status": "blocked",
+      "code_allowed": false
+    },
+    {
+      "id": "P10-T01",
+      "step": 11,
+      "title": "Implement accepted remediation roadmap",
+      "depends_on": [
+        "P09-T01"
+      ],
+      "owner": "project-orchestrator",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P11-T01",
+      "step": 12,
+      "title": "Push PR and converge CI to green",
+      "depends_on": [
+        "P10-T01"
+      ],
+      "owner": "release-engineer",
+      "status": "blocked",
+      "code_allowed": true
+    },
+    {
+      "id": "P12-T01",
+      "step": 13,
+      "title": "Freeze release candidate and rehearse rollback",
+      "depends_on": [
+        "P11-T01"
+      ],
+      "owner": "release-engineer",
+      "status": "blocked",
+      "code_allowed": false
+    },
+    {
+      "id": "P13-T01",
+      "step": 14,
+      "title": "Deploy Cloudflare and verify production",
+      "depends_on": [
+        "P12-T01"
+      ],
+      "owner": "release-engineer",
+      "status": "blocked",
+      "code_allowed": true
+    }
+  ]
+}

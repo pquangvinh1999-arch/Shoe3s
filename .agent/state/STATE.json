@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "project": "Wed3s 3D Booking Upgrade",
+  "repository": "pquangvinh1999-arch/Wed3s",
+  "active_actor": null,
+  "active_task": "P00-T01",
+  "phase": "context-initialization",
+  "gates": {
+    "context_gate": "pending",
+    "research_gate": "blocked",
+    "plan_gate": "blocked",
+    "implementation_gate": "blocked",
+    "independent_review_gate": "blocked",
+    "release_candidate_gate": "blocked",
+    "deployment_gate": "blocked"
+  },
+  "last_checkpoint": null,
+  "last_commit": null,
+  "risk_level": "high",
+  "notes": [
+    "Do not code until context gate is approved.",
+    "Public order creation must be secured before visual 3D migration.",
+    "Work and Codex must hand off through committed repository state."
+  ]
+}

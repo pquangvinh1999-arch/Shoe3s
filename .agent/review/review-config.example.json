@@ -1,0 +1,21 @@
+{
+  "reviewers": [
+    {
+      "id": "gpt56",
+      "model": "GPT-5.6 Thinking",
+      "prompt": ".agent/review/GPT56_REVIEW_PROMPT.md"
+    },
+    {
+      "id": "reviewer-b",
+      "model": "CONFIGURE_AVAILABLE_INDEPENDENT_MODEL",
+      "suggested_user_value": "gemini-flash-3.6",
+      "prompt": ".agent/review/SECOND_REVIEWER_PROMPT.md"
+    }
+  ],
+  "same_commit_required": true,
+  "minimum_target_score": 80,
+  "block_on_severity": [
+    "Critical",
+    "High"
+  ]
+}

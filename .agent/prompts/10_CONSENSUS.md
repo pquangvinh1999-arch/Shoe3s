@@ -1,0 +1,1 @@
+Read both independent reports only after they are complete. Build a finding matrix, reproduce disputed issues, and create `LO-TRINH-FIX-<date>.md`. Do not average scores blindly. Critical/High accepted findings block release.
