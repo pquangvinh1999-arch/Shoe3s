@@ -1,0 +1,8 @@
+{
+  "note": "Example only. Discover current connector/MCP schemas in the active client before configuring.",
+  "servers": {
+    "github": {"enabled": false, "auth": "oauth"},
+    "supabase": {"enabled": false, "auth": "oauth", "project": "SELECT_PROJECT"},
+    "cloudflare": {"enabled": false, "auth": "oauth", "project": "SELECT_PROJECT"}
+  }
+}
