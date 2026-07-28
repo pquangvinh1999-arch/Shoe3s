@@ -104,7 +104,7 @@
         "P00-T01"
       ],
       "owner": "repo-archaeologist",
-      "status": "active",
+      "status": "done",
       "code_allowed": false,
       "allowed_changes": [
         "clone and read Wed3s main",
@@ -136,7 +136,7 @@
         "P00-T02"
       ],
       "owner": "product-context-guardian",
-      "status": "blocked",
+      "status": "active",
       "code_allowed": false
     },
     {

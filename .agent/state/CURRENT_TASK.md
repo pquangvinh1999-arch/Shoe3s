@@ -1,21 +1,12 @@
 # Current Task
 
-- Task ID: `P00-T02`
-- Owner: `repo-archaeologist`
+- Task ID: `P00-T03`
+- Owner: `product-context-guardian`
 - Status: `active`
-- Goal: Import the Wed3s application baseline into Shoe3s.
+- Goal: Audit and approve project context.
 - Allowed changes:
-  - clone/read Wed3s main;
-  - copy safe tracked baseline files;
-  - inventory and secret scan;
-  - evidence and canonical state updates.
 - Forbidden changes:
-  - refactor;
-  - application behavior changes;
-  - dependency upgrades;
-  - database or migration changes;
-  - production configuration changes;
-  - deployment.
-- Required evidence: `.agent/evidence/P00-T02/`
+- Required evidence:
+  - `.agent/evidence/P00-T03/security-audit.md`
 - Gate state: `context_gate = pending`; implementation is prohibited.
-- Next action: Clone and import `pquangvinh1999-arch/Wed3s` main using the approved baseline-import procedure.
+- Next action: Started P00-T04 evidence with asset/performance inventory findings and missing local asset references.
