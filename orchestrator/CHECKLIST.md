@@ -2,6 +2,13 @@
 
 Generated/maintained alongside `TASKS.json`.
 
+## Quick start for tomorrow
+
+- Current active task: `P00-T03` — audit and approve project context
+- Current branch: `chore/P00-T02-import-wed3s-baseline`
+- Next evidence work: `P00-T03` security/RLS/secret audit, then `P00-T04` asset/performance inventory
+- After evidence gates: move to `P01-T01`/`P01-T02` then `P02-T01`
+
 ## P00 — Baseline & audit
 - [ ] P00-T01 Branch and baseline snapshot
 - [ ] P00-T02 Behavior/route regression baseline
