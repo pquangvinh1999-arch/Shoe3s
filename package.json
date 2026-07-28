@@ -1,0 +1,18 @@
+{
+  "name": "shoe3s",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:unit": "vitest run tests/**/*.test.ts",
+    "test:e2e": "vitest run --environment jsdom tests/**/*.spec.ts"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "vitest": "^4.1.10"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  }
+}

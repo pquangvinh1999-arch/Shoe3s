@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3S Shoe Care System</title>
+    
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- SUPABASE SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- SHEETJS -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+
+        <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="flex flex-col md:flex-row p-0 md:p-4 gap-4">
+
+    <!-- VIEW 0: LOGIN -->
+    <div id="login-view" class="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 hidden">
+        <div class="glass-panel p-10 rounded-[40px] w-full max-w-sm text-center shadow-2xl">
+            <div class="logo-container mb-6">
+                <img src="logo.png" class="logo-img">
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-6">Quản Trị Hệ Thống 3S</h2>
+            <input type="text" id="user" placeholder="Email" class="w-full px-4 py-3 rounded-2xl border-none bg-white/60 mb-4 outline-none ring-1 ring-sky-200 focus:ring-2 focus:ring-sky-500 transition font-semibold">
+            <input type="password" id="pass" placeholder="Password" class="w-full px-4 py-3 rounded-2xl border-none bg-white/60 mb-8 outline-none ring-1 ring-sky-200 focus:ring-2 focus:ring-sky-500 transition font-semibold">
+            <button onclick="doLogin()" class="w-full bg-slate-800 text-white font-bold py-4 rounded-2xl shadow-xl hover:bg-slate-900 transition-all active:scale-95">ĐĂNG NHẬP</button>
+        </div>
+    </div>
+
+    <!-- VIEW 1: LANDING PAGE -->
+    <div id="landing-view" class="fixed inset-0 z-50 overflow-y-auto w-full h-full flex flex-col items-center py-10 px-4 hidden">
+        <div class="bg-slider-container" id="slider"></div>
+        <div class="absolute inset-0 bg-white/40 backdrop-blur-md z-[-1]"></div>
+        <div class="absolute top-4 right-4 text-right bg-white/50 p-3 rounded-2xl backdrop-blur-sm shadow-sm">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest"><i class="fa-solid fa-location-dot text-sky-500 mr-1"></i> P. Long Nguyên, TP. HCM</p>
+            <a href="tel:0382878953" class="text-sm font-extrabold text-sky-700 hover:text-sky-500 transition"><i class="fa-solid fa-phone mr-1"></i> 0382.878.953</a>
+        </div>
+        <div class="logo-container mb-6 mt-10">
+            <img src="logo.png" class="logo-img logo-landing">
+        </div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-center text-slate-800 mb-2 leading-tight">Đặt Lịch Chăm Sóc Giày <span class="text-sky-600">3S</span></h1>
+        <p class="text-sm text-slate-500 mb-10 font-medium">Điền thông tin để 3S chăm sóc đôi giày của bạn tốt nhất</p>
+        <div id="step-1" class="glass-panel p-8 rounded-[32px] w-full max-w-md shadow-2xl border-white">
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Số điện thoại</label>
+                    <input type="tel" id="cus-phone" placeholder="09xx..." class="w-full px-4 py-3 rounded-xl border-none bg-white/80 ring-1 ring-sky-100 focus:ring-2 focus:ring-sky-500 outline-none font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Tên khách hàng</label>
+                    <input type="text" id="cus-name" placeholder="Nhập tên bạn" class="w-full px-4 py-3 rounded-xl border-none bg-white/80 ring-1 ring-sky-100 focus:ring-2 focus:ring-sky-500 outline-none font-bold">
+                </div>
+                <button onclick="toStep2()" class="w-full bg-sky-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-sky-200 hover:bg-sky-700 transition-all active:scale-95">TIẾP TỤC CHỌN DỊCH VỤ <i class="fa-solid fa-chevron-right ml-2"></i></button>
+            </div>
+        </div>
+        <div id="step-2" class="hidden w-full max-w-4xl mt-6">
+            <div class="glass-panel p-5 rounded-2xl mb-6 flex justify-between items-center">
+                <p class="font-bold text-slate-700">Chào <span id="show-name" class="text-sky-600">Khách hàng</span>, chọn dịch vụ nhé!</p>
+                <button onclick="location.reload()" class="text-xs font-bold text-rose-500">Sửa thông tin</button>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="service-grid">
+                <div class="service-card glass-panel p-5 rounded-2xl text-center" onclick="toggleSvc(this, 'Vệ sinh toàn diện')">
+                    <i class="fa-solid fa-soap text-2xl text-sky-500 mb-2 block"></i>
+                    <h3 class="font-bold text-sm">Vệ sinh toàn diện</h3>
+                    <p class="text-xs text-sky-600 font-extrabold mt-1">69.000 ₫</p>
+                </div>
+                <div class="service-card glass-panel p-5 rounded-2xl text-center" onclick="toggleSvc(this, 'Xử lý keo')">
+                    <i class="fa-solid fa-layer-group text-2xl text-indigo-500 mb-2 block"></i>
+                    <h3 class="font-bold text-sm">Xử lý keo</h3>
+                    <p class="text-xs text-indigo-600 font-extrabold mt-1">139.000 ₫</p>
+                </div>
+                <div class="service-card glass-panel p-5 rounded-2xl text-center" onclick="toggleSvc(this, 'Khâu đế')">
+                    <i class="fa-solid fa-hammer text-2xl text-rose-500 mb-2 block"></i>
+                    <h3 class="font-bold text-sm">Khâu đế</h3>
+                    <p class="text-xs text-rose-600 font-extrabold mt-1">99.000 ₫</p>
+                </div>
+                <div class="service-card glass-panel p-5 rounded-2xl text-center" onclick="toggleSvc(this, 'Tẩy ố vàng đế')">
+                    <i class="fa-solid fa-droplet-slash text-2xl text-amber-500 mb-2 block"></i>
+                    <h3 class="font-bold text-sm">Tẩy ố vàng đế</h3>
+                    <p class="text-xs text-amber-600 font-extrabold mt-1">139.000 ₫</p>
+                </div>
+                <div class="service-card glass-panel p-5 rounded-2xl text-center" onclick="toggleSvc(this, 'Dán Sole')">
+                    <i class="fa-solid fa-shoe-prints text-2xl text-emerald-500 mb-2 block"></i>
+                    <h3 class="font-bold text-sm">Dán Sole</h3>
+                    <p class="text-xs text-emerald-600 font-extrabold mt-1">Liên hệ</p>
+                </div>
+                <div class="service-card glass-panel p-5 rounded-2xl text-center" onclick="toggleSvc(this, 'Thay đế, đắp đế cầu lông, bóng rổ, bóng chuyền')">
+                    <i class="fa-solid fa-star text-2xl text-purple-500 mb-2 block"></i>
+                    <h3 class="font-bold text-xs leading-tight">Thay đế, đắp đế...</h3>
+                    <p class="text-xs text-purple-600 font-extrabold mt-1">Liên hệ</p>
+                </div>
+                <!-- DỊCH VỤ MỚI -->
+                <div class="service-card glass-panel p-5 rounded-2xl text-center" onclick="toggleSvc(this, 'Vệ sinh túi sách, Balo')">
+                    <i class="fa-solid fa-bag-shopping text-2xl text-cyan-500 mb-2 block"></i>
+                    <h3 class="font-bold text-xs leading-tight">Vệ sinh túi sách, Balo</h3>
+                    <p class="text-xs text-cyan-600 font-extrabold mt-1">Liên hệ</p>
+                </div>
+            </div>
+            <div class="glass-panel p-5 rounded-2xl mb-6 bg-slate-50 border border-slate-200">
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Địa chỉ lấy hàng (tuỳ chọn)</label>
+                    <input type="text" id="pickup-address" placeholder="Nhập địa chỉ lấy giày" class="w-full px-4 py-3 rounded-xl border-none bg-white/90 ring-1 ring-slate-200 focus:ring-2 focus:ring-sky-500 outline-none font-bold">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Ghi chú thêm (tuỳ chọn)</label>
+                    <textarea id="order-note" placeholder="Ghi chú kỹ thuật hoặc yêu cầu đặc biệt" rows="3" class="w-full px-4 py-3 rounded-xl border-none bg-white/90 ring-1 ring-slate-200 focus:ring-2 focus:ring-sky-500 outline-none font-bold resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Turnstile token</label>
+                    <input type="text" id="turnstile-token" placeholder="Token tuỳ chọn cho demo/local" class="w-full px-4 py-3 rounded-xl border-none bg-white/90 ring-1 ring-slate-200 focus:ring-2 focus:ring-sky-500 outline-none font-bold">
+                </div>
+                <p class="mt-2 text-xs text-slate-500">Optional for local/demo mode. Real backend integration should provide a valid token.</p>
+            </div>
+            <div class="mt-4 text-center">
+                <button onclick="submitOrder()" class="bg-slate-800 text-white px-12 py-4 rounded-full font-extrabold text-lg shadow-2xl hover:scale-105 transition">HOÀN TẤT ĐẶT ĐƠN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="success-modal" class="fixed inset-0 z-[1000] hidden flex items-center justify-center bg-black/60 backdrop-blur-md">
+        <div class="modal-content max-w-sm">
+            <div class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Đặt Đơn Thành Công!</h2>
+            <p class="text-slate-500 mb-8">3S đã nhận được yêu cầu của bạn và sẽ gọi lại xác nhận ngay.</p>
+            <button onclick="location.reload()" class="bg-sky-600 text-white px-8 py-3 rounded-xl font-bold">Đóng</button>
+        </div>
+    </div>
+
+    <!-- VIEW 2: ADMIN -->
+    <div id="admin-view" class="hidden flex-1 flex flex-col md:flex-row gap-4 h-full w-full">
+        <aside class="md:w-64 glass-panel md:rounded-[32px] rounded-t-3xl flex flex-row md:flex-col p-2 md:p-6 fixed bottom-0 left-0 w-full md:relative z-40 h-auto md:h-full justify-around md:justify-start">
+            <div class="hidden md:block text-center mb-8 relative">
+                <div class="logo-container">
+                    <img src="logo.png" class="logo-img">
+                </div>
+                <span class="absolute -top-2 right-0 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full animate-pulse">ADMIN</span>
+            </div>
+            <nav class="flex md:flex-col gap-2 w-full justify-around md:justify-start">
+                <button onclick="switchTab('landing')" id="btn-landing" class="nav-item flex items-center gap-3 md:px-5 md:py-3.5 rounded-2xl md:w-full text-left font-bold text-slate-600">
+                    <i class="fa-solid fa-globe text-xl"></i> <span>Landing Page</span>
+                </button>
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-item active flex items-center gap-3 md:px-5 md:py-3.5 rounded-2xl md:w-full text-left font-bold text-slate-600">
+                    <i class="fa-solid fa-chart-line text-xl"></i> <span>Dashboard</span>
+                </button>
+                <button onclick="switchTab('bookings')" id="btn-bookings" class="nav-item flex items-center gap-3 md:px-5 md:py-3.5 rounded-2xl md:w-full text-left font-bold text-slate-600">
+                    <i class="fa-solid fa-clock-rotate-left text-xl"></i> <span>Đặt Lịch (Landing)</span>
+                </button>
+                <button onclick="switchTab('orders')" id="btn-orders" class="nav-item flex items-center gap-3 md:px-5 md:py-3.5 rounded-2xl md:w-full text-left font-bold text-slate-600">
+                    <i class="fa-solid fa-list-check text-xl"></i> <span>Đơn Hàng</span>
+                </button>
+                <button onclick="switchTab('finance')" id="btn-finance" class="nav-item flex items-center gap-3 md:px-5 md:py-3.5 rounded-2xl md:w-full text-left font-bold text-slate-600">
+                    <i class="fa-solid fa-wallet text-xl"></i> <span>Thu Chi</span>
+                </button>
+                <button onclick="switchTab('customers')" id="btn-customers" class="nav-item flex items-center gap-3 md:px-5 md:py-3.5 rounded-2xl md:w-full text-left font-bold text-slate-600">
+                    <i class="fa-solid fa-users-gear text-xl"></i> <span>CRM Khách Hàng</span>
+                </button>
+                <button onclick="clearPOS(); switchTab('payment')" id="btn-payment" class="nav-item flex items-center gap-3 md:px-5 md:py-3.5 rounded-2xl md:w-full text-left font-bold text-slate-600">
+                    <i class="fa-solid fa-qrcode text-xl"></i> <span>Thanh Toán</span>
+                </button>
+            </nav>
+            <button onclick="logout()" class="hidden md:flex mt-auto p-3 text-rose-500 font-bold text-xs hover:bg-rose-50 rounded-xl transition"><i class="fa-solid fa-power-off mr-2"></i> Thoát</button>
+        </aside>
+
+        <main class="flex-1 glass-panel rounded-[32px] p-6 md:p-8 overflow-y-auto relative">
+            <div class="absolute top-6 right-8 text-right hidden md:block">
+                <a href="tel:0382878953" class="text-sm font-bold text-sky-600 bg-white/60 px-3 py-1.5 rounded-xl border border-white inline-flex items-center gap-2"><i class="fa-solid fa-phone animate-pulse"></i> 0382.878.953</a>
+            </div>
+            
+            <!-- Tab Landing Preview -->
+            <section id="landing" class="tab-content">
+                <h2 class="text-2xl font-extrabold text-slate-800 mb-6">Quản Lý Landing Page</h2>
+                <div class="card-3d p-8 rounded-3xl text-center">
+                    <i class="fa-solid fa-link text-4xl text-sky-500 mb-4 block"></i>
+                    <p class="mb-6 text-slate-600">Link đặt hàng cố định cho khách hàng:</p>
+                    <div class="flex gap-2 justify-center">
+                        <input type="text" readonly value="https://3shoe.pages.dev/?page=order" class="bg-white px-4 py-3 rounded-xl border ring-1 ring-sky-100 font-mono text-sm w-full max-w-md">
+                        <button onclick="copyLandingLink()" class="bg-sky-600 text-white px-6 py-3 rounded-xl font-bold">Copy</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab Dashboard -->
+            <section id="dashboard" class="tab-content active">
+                <h2 class="text-2xl font-extrabold text-slate-800 mb-6">Phân Tích Hệ Thống</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="card-3d p-5 rounded-3xl"><p class="text-[10px] font-bold text-slate-400 uppercase">Doanh Thu Ngày</p><h3 class="text-2xl font-black text-sky-600" id="kpi-day">0 ₫</h3></div>
+                    <div class="card-3d p-5 rounded-3xl"><p class="text-[10px] font-bold text-slate-400 uppercase">Tổng Doanh Thu</p><h3 class="text-2xl font-black text-sky-700" id="kpi-total">0 ₫</h3></div>
+                    <div class="card-3d p-5 rounded-3xl"><p class="text-[10px] font-bold text-slate-400 uppercase">Tổng Chi Phí</p><h3 class="text-2xl font-black text-rose-500" id="kpi-cost">0 ₫</h3></div>
+                    <div class="card-3d p-5 rounded-3xl bg-emerald-50 border-emerald-200"><p class="text-[10px] font-bold text-emerald-600 uppercase">Lợi Nhuận Ròng</p><h3 class="text-2xl font-black text-emerald-600" id="kpi-profit">0 ₫</h3></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="card-3d p-5 rounded-3xl h-80"><p class="text-sm font-bold mb-4 text-slate-600">Doanh Thu vs Chi Phí</p><canvas id="chartBar"></canvas></div>
+                    <div class="card-3d p-5 rounded-3xl h-80"><p class="text-sm font-bold mb-4 text-slate-600">Tăng Trưởng Lợi Nhuận</p><canvas id="chartLine"></canvas></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card-3d p-6 rounded-3xl">
+                        <h3 class="font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-fire text-orange-500"></i> Dịch Vụ Bán Chạy</h3>
+                        <ul id="best-services" class="space-y-2 text-sm"></ul>
+                    </div>
+                    <div class="card-3d p-6 rounded-3xl">
+                        <h3 class="font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-crown text-yellow-500"></i> Khách Hàng Trung Thành</h3>
+                        <ul id="top-customers" class="space-y-2 text-sm"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab Đặt Lịch (Landing Page) -->
+            <section id="bookings" class="tab-content">
+                <h2 class="text-2xl font-extrabold text-slate-800 mb-6">Thông Tin Đặt Hàng (Từ Landing Page)</h2>
+                <div class="card-3d rounded-3xl overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-100 text-slate-500 uppercase text-xs">
+                            <tr>
+                                <th class="py-4 px-6">Khách Hàng</th>
+                                <th class="py-4 px-6">Số Điện Thoại</th>
+                                <th class="py-4 px-6">Dịch Vụ Yêu Cầu</th>
+                                <th class="py-4 px-6">Ngày Đặt</th>
+                                <th class="py-4 px-6 text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booking-list" class="divide-y divide-white"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab Đơn Hàng -->
+            <section id="orders" class="tab-content">
+                <h2 class="text-2xl font-extrabold text-slate-800 mb-6">Quản Lý Đơn Hàng</h2>
+                <div class="card-3d rounded-3xl overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-100 text-slate-500 uppercase text-xs">
+                            <tr><th class="py-4 px-6">Khách Hàng</th><th class="py-4 px-6">Dịch Vụ</th><th class="py-4 px-6">Ngày Đặt</th><th class="py-4 px-6">Trạng Thải</th><th class="py-4 px-6">Hành động</th></tr>
+                        </thead>
+                        <tbody id="order-list" class="divide-y divide-white"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab Thu Chi -->
+            <section id="finance" class="tab-content">
+                <h2 class="text-2xl font-extrabold text-slate-800 mb-6">Quản Lý Thu Chi</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="card-3d p-6 rounded-3xl h-fit">
+                        <h3 class="font-bold mb-4">Nhập Chi Phí</h3>
+                        <div class="space-y-3">
+                            <input type="text" id="cost-desc" placeholder="Mô tả chi phí..." class="w-full p-3 rounded-xl bg-white/50 ring-1 ring-sky-100 outline-none">
+                            <input type="number" id="cost-val" placeholder="Số tiền (₫)" class="w-full p-3 rounded-xl bg-white/50 ring-1 ring-sky-100 outline-none">
+                            <select id="cost-type" class="w-full p-3 rounded-xl bg-white/50 ring-1 ring-sky-100 outline-none">
+                                <option value="vattu">Vật tư tiêu hao</option>
+                                <option value="codinh">Vật tư cố định</option>
+                                <option value="phatsinh">Chi phí phát sinh</option>
+                            </select>
+                            <button onclick="addCost()" class="w-full bg-rose-500 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-rose-600 transition">Ghi Nhận</button>
+                        </div>
+                    </div>
+                    <div class="card-3d p-6 rounded-3xl md:col-span-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold">Lịch Sử Chi Tiêu</h3>
+                            <span class="text-rose-500 font-black text-lg" id="total-cost-display">0 ₫</span>
+                        </div>
+                        <ul id="cost-list" class="space-y-3"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab CRM -->
+            <section id="customers" class="tab-content">
+                <h2 class="text-2xl font-extrabold text-slate-800 mb-6">CRM Quản Lý Khách Hàng</h2>
+                <div class="card-3d rounded-3xl overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-100 text-slate-500 uppercase text-xs">
+                            <tr><th class="py-4 px-6">Khách</th><th class="py-4 px-6">SĐT</th><th class="py-4 px-6">Số Lần SD</th><th class="py-4 px-6">Đánh Giá</th><th class="py-4 px-6">Tổng Tiền</th></tr>
+                        </thead>
+                        <tbody id="customer-list" class="divide-y divide-white"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab Thanh Toán -->
+            <section id="payment" class="tab-content flex flex-col items-center justify-center h-full">
+                <div class="flex flex-col md:flex-row gap-8 w-full max-w-5xl">
+                    <div class="flex-1 card-3d p-8 rounded-[40px] shadow-2xl">
+                        <h3 class="text-2xl font-black mb-6 flex items-center gap-2"><i class="fa-solid fa-calculator text-sky-500"></i> Máy Tính Tiền 3S</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Tên khách hàng</label>
+                                <input type="text" id="pay-name" placeholder="Nhập tên..." class="w-full px-4 py-2 rounded-xl bg-white/80 ring-1 ring-sky-100 outline-none font-bold text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Số điện thoại</label>
+                                <input type="tel" id="pay-phone" placeholder="09xx..." class="w-full px-4 py-2 rounded-xl bg-white/80 ring-1 ring-sky-100 outline-none font-bold text-sm">
+                            </div>
+                        </div>
+                        <div id="pay-services" class="grid grid-cols-2 gap-3 mb-4 text-left max-h-[300px] overflow-y-auto pr-2"></div>
+                        
+                        <!-- MỚI: Thêm dịch vụ khác tự do -->
+                        <div class="flex gap-2 mb-4 border-t border-slate-100 pt-4">
+                            <input type="text" id="custom-svc-name" placeholder="Tên dịch vụ mới..." class="flex-1 px-4 py-3 rounded-xl bg-slate-50 ring-1 ring-sky-100 outline-none text-sm font-bold focus:ring-sky-400 focus:bg-white transition">
+                            <input type="number" id="custom-svc-price" placeholder="Giá (₫)" class="w-28 px-4 py-3 rounded-xl bg-slate-50 ring-1 ring-sky-100 outline-none text-sm font-bold focus:ring-sky-400 focus:bg-white transition">
+                            <button onclick="addCustomService()" class="bg-emerald-500 text-white px-4 py-3 rounded-xl font-bold shadow-md hover:bg-emerald-600 transition"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+
+                        <!-- MỚI: Thẻ giảm giá -->
+                        <div class="flex justify-between items-center mb-6 bg-rose-50 p-3 rounded-xl border border-rose-100">
+                            <span class="text-sm font-bold text-rose-500"><i class="fa-solid fa-tags mr-1"></i> Áp dụng giảm giá:</span>
+                            <select id="discount-select" onchange="updatePayTotal()" class="px-3 py-2 rounded-lg border-none bg-white ring-1 ring-rose-200 outline-none text-sm font-black text-rose-600 focus:ring-2 focus:ring-rose-400 cursor-pointer shadow-sm">
+                                <option value="0">Không giảm giá</option>
+                                <option value="5">Giảm 5%</option>
+                                <option value="10">Giảm 10%</option>
+                                <option value="15">Giảm 15%</option>
+                            </select>
+                        </div>
+
+                        <div class="text-center mb-8 relative">
+                            <p class="text-sm text-slate-500 mb-1">Tổng tiền thanh toán:</p>
+                            <h2 class="text-5xl font-black text-sky-600 tracking-tight" id="pay-total">0 ₫</h2>
+                            <p id="discount-info" class="text-xs text-rose-500 font-bold absolute w-full text-center mt-2 hidden">Đã giảm: <span id="discount-amount">0 ₫</span></p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="generatePaymentQR()" class="flex-1 bg-slate-800 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-slate-900 transition">XUẤT QR</button>
+                            <button onclick="exportInvoice()" class="flex-1 bg-sky-600 text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-sky-700 transition">XUẤT HÓA ĐƠN</button>
+                        </div>
+                        <div id="qr-area" class="hidden mt-6 text-center">
+                            <img src="" id="qr-img" class="w-full max-w-[240px] mx-auto rounded-2xl border-4 border-white shadow-sm">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-80 bg-white rounded-[32px] shadow-inner border-2 border-dashed border-slate-200 p-4 flex flex-col items-center justify-center overflow-hidden">
+                        <p class="text-xs font-bold text-slate-400 mb-4 uppercase">Xem trước hóa đơn (POS-58L)</p>
+                        <div id="invoice-preview" class="w-full max-w-[200px] p-4 bg-white shadow-sm border border-slate-100 text-[10px] font-mono text-slate-700 leading-tight">
+                            <div class="text-center border-b border-dashed pb-2 mb-2">
+                                <p class="font-bold">3S SHOE CARE</p>
+                                <p>P. Long Nguyên, TP. HCM</p>
+                                <p>SĐT: 0382.878.953</p>
+                            </div>
+                            <div class="text-center mb-2">--- HÓA ĐƠN ---</div>
+                            <div id="preview-items" class="space-y-1">
+                                <p class="text-center text-slate-300 italic">Hãy chọn dịch vụ...</p>
+                            </div>
+                            <div class="border-t border-dashed mt-2 pt-2 text-right font-bold">
+                                Tổng: <span id="preview-total">0 ₫</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- PRINTABLE INVOICE -->
+    <div id="printable-invoice" class="hidden fixed inset-0 z-[300] bg-white p-0 m-0 text-black font-mono text-[12px]"></div>
+
+        <script type="module" src="js/service-catalog.js"></script>
+        <script type="module" src="js/order-schema.js"></script>
+        <script defer src="js/app.js"></script>
+</body>
+<footer class="fixed bottom-4 left-0 w-full text-center pointer-events-none">
+    <p class="text-[10px] font-futuristic text-slate-500 uppercase tracking-[0.2em] opacity-50 hover:opacity-100 transition-opacity duration-500">
+        Engineered by Vinh © 2026 | Hệ thống quản lý thanh toán trực tuyến.
+    </p>
+</footer>
+</html>
