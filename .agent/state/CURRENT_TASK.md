@@ -1,12 +1,12 @@
 # Current Task
 
-- Task ID: `P03-T01`
-- Owner: `secure-backend-engineer`
+- Task ID: `P03-T03`
+- Owner: `domain-architect`
 - Status: `active`
-- Goal: Secure public order API and server pricing.
-- Allowed changes: `functions/api/orders.js`, `functions/api/telegram.js`, `js/order-schema.js`, tests, evidence.
-- Forbidden changes: admin flows, schema/status text, public route behavior breakage, deployment.
+- Goal: Extract shared service catalog and compatibility adapters.
+- Allowed changes: `js/service-catalog.js`, `js/app.js` (POS section only), tests, evidence.
+- Forbidden changes: booking behavior, admin flow breakage, schema/status text, deployment.
 - Required evidence:
-  - `.agent/evidence/P03-T01/`
+  - `.agent/evidence/P03-T03/`
 - Gate state: `implementation_gate = pending`; code allowed for this task only.
-- Next action: Complete `functions/api/orders.js` per docs/03+04: Turnstile server-side verify, idempotency (payload hash + unique key), rate limit, error envelope, safe Telegram notification after insert, body size limit; add unit tests; run secret scan + npm test.
+- Next action: Replace hard-coded `activePaymentServices` in `js/app.js` with `serviceCatalog`-derived items; keep POS custom-service and discount behavior identical; add unit test proving labels/prices match catalog.

@@ -18,3 +18,10 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - STATE.json: research_gate + plan_gate → approved; active_task → P03-T01 (implementation).
 - CHECKLIST.md: Bước 3, 4 done; Bước 5 (agent coordination) in progress.
 
+## 2026-08-02 — P03-T01 secure order API complete
+- Rewrote `functions/api/orders.js`: Turnstile server verify, idempotency (SHA-256 payload hash + key, replay/409), rate limit 20/min/IP-hash, error envelope, body 16KB, safe Telegram post-insert.
+- Rewrote `functions/api/telegram.js`: `escapeTelegramHtml` (XSS fix), generic errors, no secrets leaked.
+- Added `tests/p03-t01.secure-order-api.test.ts` (24 tests). `npm test`: 40/40 PASS. Secret scan: only known js/app.js anon key.
+- Evidence: `.agent/evidence/P03-T01/secure-order-api.md`.
+- STATE.json: P03-T01 done; P03-T02 blocked (Supabase policy export R-008); active_task → P03-T03 (POS catalog adapter).
+

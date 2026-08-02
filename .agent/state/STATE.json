@@ -3,7 +3,7 @@
   "project": "Shoe3s 3D Booking Upgrade",
   "repository": "pquangvinh1999-arch/Shoe3s",
   "active_actor": null,
-  "active_task": "P03-T01",
+  "active_task": "P03-T03",
   "phase": "implementation",
   "gates": {
     "context_gate": "approved",
@@ -14,8 +14,8 @@
     "release_candidate_gate": "blocked",
     "deployment_gate": "blocked"
   },
-  "last_checkpoint": "2026-08-02T03:48:00.000000+00:00",
-  "last_commit": "158eba5",
+  "last_checkpoint": "2026-08-02T03:55:00.000000+00:00",
+  "last_commit": "f9b3778",
   "risk_level": "high",
   "notes": [
     "P00-T01 bootstrap completed.",
@@ -24,6 +24,8 @@
     "P00-T04 registered in PLAN.json (todo); HAR/Lighthouse evidence pending.",
     "P01-T01 research complete: baseline already ships typed catalog + order schema + orders API scaffold; 16 tests pass.",
     "P02-T01 implementation plan approved (plan_gate); evidence at .agent/evidence/P02-T01/.",
-    "P03-T01 secure order API active; implementation now allowed."
+    "P03-T01 secure order API complete: Turnstile, idempotency, rate limit, error envelope, safe Telegram; 40 tests pass.",
+    "P03-T02 RLS cutover blocked on Supabase policy export (R-008); deferring until API canary.",
+    "P03-T03 service catalog + POS adapter active."
   ]
 }

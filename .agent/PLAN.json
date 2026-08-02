@@ -193,8 +193,11 @@
         "P02-T01"
       ],
       "owner": "secure-backend-engineer",
-      "status": "active",
-      "code_allowed": true
+      "status": "done",
+      "code_allowed": true,
+      "required_evidence": [
+        ".agent/evidence/P03-T01/"
+      ]
     },
     {
       "id": "P03-T02",
@@ -205,7 +208,8 @@
       ],
       "owner": "database-security-auditor",
       "status": "blocked",
-      "code_allowed": true
+      "code_allowed": true,
+      "next_action": "Blocked on Supabase policy export (R-008): run `supabase db dump --schema public` or obtain dashboard export before lockdown sequence."
     },
     {
       "id": "P03-T03",
@@ -215,8 +219,12 @@
         "P03-T01"
       ],
       "owner": "domain-architect",
-      "status": "blocked",
-      "code_allowed": true
+      "status": "active",
+      "code_allowed": true,
+      "required_evidence": [
+        ".agent/evidence/P03-T03/"
+      ],
+      "next_action": "Derive POS service list from serviceCatalog and add compatibility test."
     },
     {
       "id": "P04-T01",
