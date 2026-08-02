@@ -247,12 +247,11 @@
         "P04-T01"
       ],
       "owner": "ux-director",
-      "status": "active",
+      "status": "done",
       "code_allowed": true,
       "required_evidence": [
         ".agent/evidence/P04-T02/"
-      ],
-      "next_action": "Build booking wizard with design tokens, a11y, idempotent submit via /api/orders."
+      ]
     },
     {
       "id": "P04-T03",
@@ -263,8 +262,9 @@
         "P04-T02"
       ],
       "owner": "three-experience-engineer",
-      "status": "blocked",
-      "code_allowed": true
+      "status": "active",
+      "code_allowed": true,
+      "next_action": "Build adaptive 3D dirty-to-clean scene (three.js lazy chunk); locked asset licensing decision per R-009 or procedural model."
     },
     {
       "id": "P04-T04",

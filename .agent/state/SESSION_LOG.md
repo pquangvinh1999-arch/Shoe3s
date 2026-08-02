@@ -40,3 +40,10 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - `npm test`: 49/49 PASS. Evidence: `.agent/evidence/P04-T01/react-shell-route-split.md`.
 - STATE.json: active_task → P04-T02 (booking funnel).
 
+## 2026-08-02 — P04-T02 Design system + booking funnel complete
+- `tokens.ts`, `api.ts` (submitOrder theo orderRequestSchema, idempotency key, validPhone), `BookingWizard.tsx` 4 bước (dịch vụ → thông tin → nhận/trả → review/submit), `BookingPage.tsx` rewrite (hero + service grid + wizard).
+- A11y: 44px touch, aria-live/alert, label htmlFor, reduced-motion, next disabled khi chưa hợp lệ.
+- Fix: tsconfig include thêm `js/`; đúng relative path; phone chuẩn hóa E.164 trong payload.
+- `npm test`: 56/56 PASS. Build: index 61.61KB gzip, Booking chunk 21.04KB gzip. Evidence: `.agent/evidence/P04-T02/booking-funnel.md`.
+- STATE.json: active_task → P04-T03 (3D scene); PLAN.json P04-T03 active, ghi chú R-009 cần quyết định asset.
+

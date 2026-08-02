@@ -3,7 +3,7 @@
   "project": "Shoe3s 3D Booking Upgrade",
   "repository": "pquangvinh1999-arch/Shoe3s",
   "active_actor": null,
-  "active_task": "P04-T02",
+  "active_task": "P04-T03",
   "phase": "implementation",
   "gates": {
     "context_gate": "approved",
@@ -28,6 +28,7 @@
     "P03-T02 RLS cutover blocked on Supabase policy export (R-008); deferring until API canary.",
     "P03-T03 POS service list derived from catalog (getPaymentServices); 45 tests pass.",
     "P04-T01 React/Vite shell + route split complete: lazy chunks, booking shell 61.6KB gzip; 49 tests pass; ADR-007 accepted.",
-    "P04-T02 design system + booking funnel active."
+    "P04-T02 design system + booking funnel complete: 4-step wizard, a11y, idempotent submit via /api/orders, quote from server; 56 tests pass.",
+    "P04-T03 adaptive 3D dirty-to-clean scene active."
   ]
 }

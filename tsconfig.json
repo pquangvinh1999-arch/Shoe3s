@@ -18,5 +18,5 @@
     "noEmit": true,
     "types": ["vite/client"]
   },
-  "include": ["apps/web/src"]
+  "include": ["apps/web/src", "js"]
 }

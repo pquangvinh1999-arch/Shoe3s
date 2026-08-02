@@ -1,12 +1,14 @@
 # Current Task
 
-- Task ID: `P04-T02`
-- Owner: `ux-director`
+- Task ID: `P04-T03`
+- Owner: `domain-architect`
 - Status: `active`
-- Goal: Implement design system and booking funnel.
-- Allowed changes: `apps/web/src` (design tokens, booking UI), tests, evidence.
+- Goal: Build adaptive 3D dirty-to-clean scene.
+- Allowed changes: `apps/web/src` (3D feature), tests, evidence.
 - Forbidden changes: legacy `index.html`/`js/app.js` public flow, admin behavior, route compatibility, deployment.
 - Required evidence:
-  - `.agent/evidence/P04-T02/`
+  - `.agent/evidence/P04-T03/`
 - Gate state: `implementation_gate = pending`; code allowed for this task only.
-- Next action: Build booking funnel in React shell: wizard (chọn dịch vụ → thông tin → nhận/trả → review → submit qua /api/orders) with design tokens from MASTER_CONTEXT §6, a11y (keyboard, 44px touch), retry-safe idempotency.
+- Blocker/Risk: R-009 — no licensed 3D shoe asset yet. Decision needed: procure licensed GLB or build procedural model (fallback default).
+- Budget: 3D chunk ≤ 350KB gzip; lazy-loaded only when user reaches preview step.
+- Next action: Decide asset strategy, then lazy-load three.js scene into wizard step (dirty-to-clean toggle or per-service preview).

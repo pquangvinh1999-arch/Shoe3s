@@ -1,3 +1,4 @@
+import { BookingWizard } from '../features/booking/BookingWizard.tsx';
 import { getServiceCatalog } from '../../../../js/service-catalog';
 
 export default function BookingPage() {
@@ -25,6 +26,8 @@ export default function BookingPage() {
           </div>
         ))}
       </section>
+
+      <BookingWizard />
     </main>
   );
 }
