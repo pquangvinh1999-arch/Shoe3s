@@ -25,12 +25,12 @@
     "P01-T01 research complete: baseline already ships typed catalog + order schema + orders API scaffold; 16 tests pass.",
     "P02-T01 implementation plan approved (plan_gate); evidence at .agent/evidence/P02-T01/.",
     "P03-T01 secure order API complete: Turnstile, idempotency, rate limit, error envelope, safe Telegram; 40 tests pass.",
-    "P03-T02 RLS cutover blocked on Supabase policy export (R-008); deferring until API canary.",
+    "P03-T02 RLS cutover blocked on R-008 + ADR-010: service key owner cấp trỏ project vmakonkiotjkxlhpjwny (schema legacy, orders thiếu idempotency_key/source, 4 services khác catalog repo); anon key js/app.js trỏ agcvsogtqxoqlhcubghy không expose public.services. Cần owner xác nhận project production + anon key.",
     "P03-T03 POS service list derived from catalog (getPaymentServices); 45 tests pass.",
     "P04-T01 React/Vite shell + route split complete: lazy chunks, booking shell 61.6KB gzip; 49 tests pass; ADR-007 accepted.",
     "P04-T02 design system + booking funnel complete: 4-step wizard, a11y, idempotent submit via /api/orders, quote from server; 56 tests pass.",
     "P04-T03 adaptive 3D dirty-to-clean scene complete: procedural model (ADR-009, R-009 resolved), lazy chunk 130.6KB gzip, adaptive quality; 64 tests pass.",
     "P04-T04 fallbacks complete: 2D poster khi không có WebGL, render-on-demand cho reduced-motion, slider dùng chung; 70 tests pass.",
-    "P05-T01 module quality gates active."
+    "P05-T01 module quality gates audit run: bundle trong budget, secret scan PASS, 70/70 tests; exit blocked bởi R-008/ADR-010."
   ]
 }

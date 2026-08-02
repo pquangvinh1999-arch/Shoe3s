@@ -26,3 +26,13 @@ Use one ADR entry per approved architecture or behavior change.
 **Decision:** dựng giày 3D bằng three.js primitives (box/sphere/cylinder) + dirt texture canvas; không chờ asset GLB.
 **Reason:** R-009 — chưa có model giày có license; procedural loại bỏ rủi ro license, tự chủ hoàn toàn, chunk gzip 130.6KB (≤350KB budget). Dirty-to-clean qua material lerp + noise texture.
 **Alternative:** licensed GLB — thay được phần `buildProceduralShoe()` khi có asset hợp lệ; giữ nguyên wrapper ShoeViewer/API.
+
+## ADR-010 — Xung đột nguồn sự thật: Supabase project / catalog (recorded, chưa chọn)
+
+**Status:** recorded — cần owner xác nhận (2026-08-02)
+**Conflict (theo CONTEXT.md, phải ghi nhận không tự chọn):**
+1. Anon key trong `js/app.js` trỏ project `agcvsogtqxoqlhcubghy` — project tồn tại nhưng không expose bảng `public.services` (404 PGRST205), không khớp schema booking.
+2. Service key owner cấp trỏ project `vmakonkiotjkxlhpjwny` — có 3 bảng (orders/services/order_items), schema **legacy**: `orders(phone_number, total_amount, ...)` KHÔNG có `idempotency_key`/`source`; 4 services: CLEAN_STANDARD 90K, CLEAN_PREMIUM 150K, REPAIR_SOLE 200K, PROTECT_NANO 80K.
+3. Catalog repo `js/service-catalog.js`: 7 services `service-cleaning` 69K, `service-glue-removal` 139K, `service-sole-stitch` 99K, `service-sole-whitening` 139K, 3 món giá 0 — khác hẳn 4 services DB.
+**Implication:** chưa thể xác định project production thật + RLS state (thiếu anon key hợp lệ của project production để test anon path; service key bypass RLS nên không chứng minh được RLS trạng thái gì).
+**Action:** owner cần xác nhận (a) project production nào, (b) anon key của project đó, (c) catalog nào là chuẩn (DB hay repo) trước khi P03-T02 RLS cutover. Đồng thời rotate service key đã chia sẻ trong chat.
