@@ -4,8 +4,9 @@
 - [x] Bước 2: Kiểm tra lại tài liệu dự án
 - [x] Bước 3: Nghiên cứu trước khi code
 - [x] Bước 4: Lập kế hoạch triển khai
-- [ ] Bước 5: Điều phối agent thực hiện *(đang thực hiện)*
-- [ ] Bước 6: Kiểm tra chất lượng trong quá trình
+- [x] Bước 5: Điều phối agent thực hiện *(P03/P04 code-allowed hoàn tất; P03-T02 blocked R-008)*
+- [x] Bước 6: Kiểm tra chất lượng trong quá trình *(audit pass; exit chờ R-008)*
+- [ ] Bước 7: Báo cáo kết quả
 - [ ] Bước 7: Báo cáo kết quả
 - [ ] Bước 8: Kiểm thử lặp trong phiên mới
 - [ ] Bước 9: Đánh giá độc lập GPT-5.6 và reviewer thứ hai

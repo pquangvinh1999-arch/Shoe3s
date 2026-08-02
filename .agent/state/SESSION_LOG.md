@@ -61,3 +61,11 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - `npm test`: 70/70 PASS. Build: 3D chunk 131.44KB gzip, shell 61.61KB. Evidence: `.agent/evidence/P04-T04/fallbacks.md`.
 - STATE.json: active_task → P05-T01 (quality gates); P03-T02 vẫn blocked R-008.
 
+## 2026-08-02 — P05-T01 Module quality gates audit
+- Bundle: shell 61.61KB / 3D 131.44KB / CSS 0.64KB gzip — tất cả trong budget (≤180KB/≤350KB).
+- secret_scan: chỉ anon key js/app.js đã biết + false positive zod → PASS.
+- Tests 70/70 (9 files), build PASS, agent_sync + context_audit PASS.
+- E2E smoke: static-level (router unit 5 case + dist chunks); HAR/Lighthouse nợ (P00-T04).
+- Evidence: `.agent/evidence/P05-T01/quality-gates.md`. implementation_gate giữ pending (P03-T02 blocked R-008).
+- Bước 5 (agent coordination): các task code-allowed đã xong hết; Bước 6 audit đã chạy. Chờ R-008 để advance.
+
