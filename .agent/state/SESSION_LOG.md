@@ -55,3 +55,9 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - `npm test`: 64/64 PASS. Build pass. Evidence: `.agent/evidence/P04-T03/shoe-viewer.md`.
 - STATE.json: active_task → P04-T04 (2D/reduced-motion fallbacks).
 
+## 2026-08-02 — P04-T04 2D/reduced-motion fallbacks complete
+- `poster.ts`: supportsWebGL probe, posterPalette (dùng lại dirtVisual), drawPoster canvas 2D deterministic seed, roundRect guard.
+- ShoeViewer restructure: mode '3d'|'poster' (WebGL fail → poster), render-on-demand khi reduced-motion (không rAF liên tục), slider cập nhật cả 3D lẫn 2D (fix thiếu sót P04-T03), dispose texture cũ.
+- `npm test`: 70/70 PASS. Build: 3D chunk 131.44KB gzip, shell 61.61KB. Evidence: `.agent/evidence/P04-T04/fallbacks.md`.
+- STATE.json: active_task → P05-T01 (quality gates); P03-T02 vẫn blocked R-008.
+

@@ -273,9 +273,8 @@
         "P04-T03"
       ],
       "owner": "three-experience-engineer",
-      "status": "active",
-      "code_allowed": true,
-      "next_action": "Add 2D/reduced-motion/device fallbacks: static poster + reduced-motion static render; no-JS fallback note."
+      "status": "done",
+      "code_allowed": true
     },
     {
       "id": "P05-T01",
@@ -286,8 +285,9 @@
         "P04-T04"
       ],
       "owner": "test-engineer",
-      "status": "blocked",
-      "code_allowed": true
+      "status": "active",
+      "code_allowed": true,
+      "next_action": "Module quality gates: bundle audit (booking shell ≤180KB, 3D ≤350KB), secret scan, E2E smoke, evidence complete; P03-T02 still blocked on policy export."
     },
     {
       "id": "P06-T01",
