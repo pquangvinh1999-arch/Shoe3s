@@ -19,7 +19,7 @@ describe('P01-T02 order schema and compatibility adapter', () => {
     const payload = {
       customer_name: 'Test User',
       phone: '0382878953',
-      service_ids: ['service-cleaning'],
+      service_ids: ['CLEAN_STANDARD'],
       turnstile_token: 'token-123',
       idempotency_key: '9f1d7c0e-4c49-4b0d-bdfe-5f3e2519a1a1',
     };
@@ -27,7 +27,7 @@ describe('P01-T02 order schema and compatibility adapter', () => {
     const result = orderRequestSchema.parse(payload);
     expect(result.customer_name).toBe('Test User');
     expect(result.phone).toBe('84382878953');
-    expect(result.service_ids).toEqual(['service-cleaning']);
+    expect(result.service_ids).toEqual(['CLEAN_STANDARD']);
   });
 
   it('rejects invalid service ids', () => {
@@ -43,15 +43,15 @@ describe('P01-T02 order schema and compatibility adapter', () => {
   });
 
   it('round-trips legacy services string to service ids and back', () => {
-    const ids = legacyServicesToServiceIds('Vệ sinh toàn diện, Khâu đế');
-    expect(ids).toEqual(['service-cleaning', 'service-sole-stitch']);
-    expect(serviceIdsToLegacyServices(ids)).toBe('Vệ sinh toàn diện, Khâu đế');
+    const ids = legacyServicesToServiceIds('Giặt hấp & Vệ sinh tiêu chuẩn, Dán / Phục hồi đế giày');
+    expect(ids).toEqual(['CLEAN_STANDARD', 'REPAIR_SOLE']);
+    expect(serviceIdsToLegacyServices(ids)).toBe('Giặt hấp & Vệ sinh tiêu chuẩn, Dán / Phục hồi đế giày');
   });
 
   it('calculates total from structured items', () => {
     const total = calculateStructuredItemsTotal([
-      { service_id: 'service-cleaning', name: 'Vệ sinh toàn diện', qty: 1, priceVnd: 69000, subtotal: 69000 },
-      { service_id: 'service-sole-stitch', name: 'Khâu đế', qty: 1, priceVnd: 99000, subtotal: 99000 },
+      { service_id: 'CLEAN_STANDARD', name: 'Giặt hấp & Vệ sinh tiêu chuẩn', qty: 1, priceVnd: 90000, subtotal: 90000 },
+      { service_id: 'REPAIR_SOLE', name: 'Dán / Phục hồi đế giày', qty: 1, priceVnd: 200000, subtotal: 200000 },
     ]);
     expect(total).toBe(168000);
   });
@@ -60,7 +60,7 @@ describe('P01-T02 order schema and compatibility adapter', () => {
     const request = {
       customer_name: 'Test User',
       phone: '0382878953',
-      service_ids: ['service-cleaning', 'service-sole-stitch'],
+      service_ids: ['CLEAN_STANDARD', 'REPAIR_SOLE'],
       pickup_address: '123 Nguyễn Văn Cừ, Quận 1',
       note: 'Giữ kỹ phần đế',
       turnstile_token: 'token-123',
@@ -72,9 +72,9 @@ describe('P01-T02 order schema and compatibility adapter', () => {
     expect(order.phone).toBe('84382878953');
     expect(order.pickup_address).toBe('123 Nguyễn Văn Cừ, Quận 1');
     expect(order.note).toBe('Giữ kỹ phần đế');
-    expect(order.services).toBe('Vệ sinh toàn diện, Khâu đế');
-    expect(order.service_ids).toEqual(['service-cleaning', 'service-sole-stitch']);
-    expect(order.total).toBe(168000);
+    expect(order.services).toBe('Giặt hấp & Vệ sinh tiêu chuẩn, Dán / Phục hồi đế giày');
+    expect(order.service_ids).toEqual(['CLEAN_STANDARD', 'REPAIR_SOLE']);
+    expect(order.total).toBe(290000);
     expect(order.status).toBe(ORDER_STATUS.NEW);
     expect(order.created_at).toBeTruthy();
   });

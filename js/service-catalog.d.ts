@@ -7,6 +7,8 @@ export type Service = {
   active: boolean;
   sortOrder: number;
   visualTarget?: 'upper' | 'sole' | 'stitch' | 'bag';
+  category?: 'cleaning' | 'repair' | 'protection';
+  estimatedHours?: number;
 };
 
 export type ResolvedServiceItem = {
