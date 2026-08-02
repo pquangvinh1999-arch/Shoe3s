@@ -32,3 +32,11 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - Evidence: `.agent/evidence/P03-T03/service-catalog-pos-adapter.md`.
 - STATE.json: P03-T03 done → active_task P04-T01 (React/Vite shell + route split).
 
+## 2026-08-02 — P04-T01 React/Vite shell complete
+- Added react/react-dom/vite/typescript; vite.config root=apps/web; ADR-007 accepted, ADR-008 (no react-router).
+- Route adapter `resolveRoute()` giữ `?page=order` + `/`; lazy chunks Booking/Admin/NotFound.
+- `js/service-catalog.d.ts`; booking shell dùng getServiceCatalog().
+- `npm run build` pass: index 61.61KB gzip (budget ≤180KB), không admin/chart/xlsx/3D trong initial.
+- `npm test`: 49/49 PASS. Evidence: `.agent/evidence/P04-T01/react-shell-route-split.md`.
+- STATE.json: active_task → P04-T02 (booking funnel).
+

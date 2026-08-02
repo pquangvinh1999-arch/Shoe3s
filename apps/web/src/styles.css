@@ -1,0 +1,99 @@
+:root {
+  --ink-950: #07111f;
+  --navy-800: #0b2b46;
+  --cyan-500: #19b8e6;
+  --copper-500: #c77a3d;
+  --mist-50: #f5fafc;
+  --success-500: #16a36a;
+  --danger-500: #d64545;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: var(--mist-50);
+  color: var(--ink-950);
+  font-size: 16px;
+}
+
+.shell-loading {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  color: var(--navy-800);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.booking-hero {
+  background: linear-gradient(180deg, var(--ink-950), var(--navy-800));
+  color: #fff;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.booking-hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  letter-spacing: -0.02em;
+}
+
+.booking-hero p {
+  margin: 0 0 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.cta {
+  display: inline-block;
+  background: var(--cyan-500);
+  color: var(--ink-950);
+  font-weight: 800;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  min-height: 44px;
+}
+
+.service-grid {
+  display: grid;
+  gap: 1rem;
+  padding: 2rem 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.service-card {
+  background: #fff;
+  border: 1px solid rgba(11, 43, 70, 0.12);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.service-card .name {
+  font-weight: 700;
+}
+
+.service-card .price {
+  color: var(--navy-800);
+  font-weight: 800;
+}
+
+.service-card .contact {
+  color: var(--copper-500);
+  font-weight: 800;
+}
+
+.admin-gate {
+  max-width: 480px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 1rem;
+  text-align: center;
+}

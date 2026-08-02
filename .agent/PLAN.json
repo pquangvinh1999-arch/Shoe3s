@@ -233,12 +233,11 @@
         "P03-T03"
       ],
       "owner": "domain-architect",
-      "status": "active",
+      "status": "done",
       "code_allowed": true,
       "required_evidence": [
         ".agent/evidence/P04-T01/"
-      ],
-      "next_action": "Scaffold Vite/React/TS with route adapter; verify bundle split excludes admin/3D from public shell."
+      ]
     },
     {
       "id": "P04-T02",
@@ -248,8 +247,12 @@
         "P04-T01"
       ],
       "owner": "ux-director",
-      "status": "blocked",
-      "code_allowed": true
+      "status": "active",
+      "code_allowed": true,
+      "required_evidence": [
+        ".agent/evidence/P04-T02/"
+      ],
+      "next_action": "Build booking wizard with design tokens, a11y, idempotent submit via /api/orders."
     },
     {
       "id": "P04-T03",
