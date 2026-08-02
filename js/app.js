@@ -403,15 +403,7 @@
         // 4. MÁY TÍNH TIỀN OFFLINE & IN HÓA ĐƠN POS 58L
         // -----------------------------------------------------
         let offlineSelected = {}; 
-        let activePaymentServices = [
-            {n: 'Vệ sinh toàn diện', p: 69000, c: false}, 
-            {n: 'Xử lý keo', p: 139000, c: false}, 
-            {n: 'Khâu đế', p: 99000, c: false}, 
-            {n: 'Tẩy ố vàng đế', p: 139000, c: false}, 
-            {n: 'Dán Sole', p: 0, c: true}, 
-            {n: 'Thay đế, đắp đế cầu lông, bóng rổ, bóng chuyền', p: 0, c: true},
-            {n: 'Vệ sinh túi sách, Balo', p: 0, c: true}
-        ];
+        let activePaymentServices = typeof getPaymentServices === 'function' ? getPaymentServices() : [];
 
         // Reset trạng thái máy tính tiền khi bấm trực tiếp vào menu Thanh Toán
         function clearPOS() {
@@ -425,15 +417,7 @@
             }
             
             // Khôi phục danh sách dịch vụ mặc định
-            activePaymentServices = [
-                {n: 'Vệ sinh toàn diện', p: 69000, c: false}, 
-                {n: 'Xử lý keo', p: 139000, c: false}, 
-                {n: 'Khâu đế', p: 99000, c: false}, 
-                {n: 'Tẩy ố vàng đế', p: 139000, c: false}, 
-                {n: 'Dán Sole', p: 0, c: true}, 
-                {n: 'Thay đế, đắp đế cầu lông, bóng rổ, bóng chuyền', p: 0, c: true},
-                {n: 'Vệ sinh túi sách, Balo', p: 0, c: true}
-            ];
+            activePaymentServices = typeof getPaymentServices === 'function' ? getPaymentServices() : [];
             offlineSelected = {};
             initPayment();
         }

@@ -219,12 +219,11 @@
         "P03-T01"
       ],
       "owner": "domain-architect",
-      "status": "active",
+      "status": "done",
       "code_allowed": true,
       "required_evidence": [
         ".agent/evidence/P03-T03/"
-      ],
-      "next_action": "Derive POS service list from serviceCatalog and add compatibility test."
+      ]
     },
     {
       "id": "P04-T01",
@@ -234,8 +233,12 @@
         "P03-T03"
       ],
       "owner": "domain-architect",
-      "status": "blocked",
-      "code_allowed": true
+      "status": "active",
+      "code_allowed": true,
+      "required_evidence": [
+        ".agent/evidence/P04-T01/"
+      ],
+      "next_action": "Scaffold Vite/React/TS with route adapter; verify bundle split excludes admin/3D from public shell."
     },
     {
       "id": "P04-T02",

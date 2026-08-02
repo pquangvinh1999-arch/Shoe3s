@@ -25,3 +25,10 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - Evidence: `.agent/evidence/P03-T01/secure-order-api.md`.
 - STATE.json: P03-T01 done; P03-T02 blocked (Supabase policy export R-008); active_task → P03-T03 (POS catalog adapter).
 
+## 2026-08-02 — P03-T03 POS catalog adapter complete
+- `js/service-catalog.js`: added `getPaymentServices()` ({n,p,c} từ catalog, c=true khi price=0).
+- `js/app.js`: thay 2 mảng hard-code activePaymentServices bằng getPaymentServices(); giữ addCustomService/discount/VietQR/in hóa đơn.
+- `tests/p03-t03.pos-service-catalog.test.ts` (5 tests). `npm test`: 45/45 PASS; syntax OK; secret scan OK.
+- Evidence: `.agent/evidence/P03-T03/service-catalog-pos-adapter.md`.
+- STATE.json: P03-T03 done → active_task P04-T01 (React/Vite shell + route split).
+

@@ -44,6 +44,16 @@ function selectedNamesToLegacyServices(selectedNames = []) {
     .join(', ');
 }
 
+function getPaymentServices() {
+  return serviceCatalog
+    .filter((svc) => svc.active)
+    .map((svc) => ({
+      n: svc.name,
+      p: svc.priceVnd ?? 0,
+      c: svc.priceVnd === 0,
+    }));
+}
+
 if (typeof window !== 'undefined') {
   window.serviceCatalog = serviceCatalog;
   window.getServiceCatalog = getServiceCatalog;
@@ -52,6 +62,7 @@ if (typeof window !== 'undefined') {
   window.resolveSelectedItems = resolveSelectedItems;
   window.calculateTotal = calculateTotal;
   window.selectedNamesToLegacyServices = selectedNamesToLegacyServices;
+  window.getPaymentServices = getPaymentServices;
 }
 
 export {
@@ -62,4 +73,5 @@ export {
   resolveSelectedItems,
   calculateTotal,
   selectedNamesToLegacyServices,
+  getPaymentServices,
 };
