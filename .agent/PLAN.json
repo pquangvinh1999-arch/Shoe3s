@@ -136,8 +136,26 @@
         "P00-T02"
       ],
       "owner": "product-context-guardian",
-      "status": "active",
-      "code_allowed": false
+      "status": "done",
+      "code_allowed": false,
+      "required_evidence": [
+        ".agent/evidence/P00-T03/security-audit.md"
+      ]
+    },
+    {
+      "id": "P00-T04",
+      "step": 2,
+      "title": "Asset and performance inventory",
+      "depends_on": [
+        "P00-T02"
+      ],
+      "owner": "repo-archaeologist",
+      "status": "todo",
+      "code_allowed": false,
+      "required_evidence": [
+        ".agent/evidence/P00-T04/"
+      ],
+      "next_action": "Finish asset/performance inventory: capture HAR or browser trace, Lighthouse baseline, finalize asset_manifest.md license/source/status."
     },
     {
       "id": "P01-T01",
@@ -147,8 +165,12 @@
         "P00-T03"
       ],
       "owner": "repo-archaeologist",
-      "status": "blocked",
-      "code_allowed": false
+      "status": "active",
+      "code_allowed": false,
+      "required_evidence": [
+        ".agent/evidence/P01-T01/"
+      ],
+      "next_action": "Read docs/orchestrator/04_DATA_API_CONTRACTS.md and baseline code; record research log with sources and options; prepare typed service catalog extraction."
     },
     {
       "id": "P02-T01",
