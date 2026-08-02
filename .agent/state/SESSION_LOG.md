@@ -47,3 +47,11 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - `npm test`: 56/56 PASS. Build: index 61.61KB gzip, Booking chunk 21.04KB gzip. Evidence: `.agent/evidence/P04-T02/booking-funnel.md`.
 - STATE.json: active_task → P04-T03 (3D scene); PLAN.json P04-T03 active, ghi chú R-009 cần quyết định asset.
 
+## 2026-08-02 — P04-T03 Procedural 3D viewer complete
+- User decision: procedural model (ADR-009) — giải quyết R-009, không cần asset GLB.
+- `scene.ts`: resolveAdapter (reduced-motion/≤4 cores/coarse → low-power), dirtVisual lerp #F2EFE9→#6B5A4A, createDirtTexture canvas noise, buildProceduralShoe (9 parts), applyDirtToParts.
+- `ShoeViewer.tsx`: scene navy, lights, auto-rotate, resize, pointerdown, full dispose cleanup; slider dirt 0–100%.
+- BookingWizard bước 4: toggle preview với React.lazy + Suspense; chunk 3D 130.63KB gzip (≤350KB).
+- `npm test`: 64/64 PASS. Build pass. Evidence: `.agent/evidence/P04-T03/shoe-viewer.md`.
+- STATE.json: active_task → P04-T04 (2D/reduced-motion fallbacks).
+

@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { getServiceCatalog } from '../../../../../js/service-catalog';
 import { tokens } from '../../design/tokens.ts';
 import { createIdempotencyKey, validPhone, computeQuote, submitOrder, type SubmitResult } from './api.ts';
+
+const ShoeViewer = lazy(() => import('../viewer/ShoeViewer.tsx'));
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -24,6 +26,8 @@ export function BookingWizard() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<SubmitResult | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewDirt, setPreviewDirt] = useState(0.4);
 
   const quote = computeQuote(services.filter((service) => selected.includes(service.id)));
 
@@ -203,6 +207,25 @@ export function BookingWizard() {
             Khách: {name} — {phone}
             {pickupAddress ? ` — ${pickupAddress}` : ''}
           </p>
+
+          <div className="preview">
+            <button
+              type="button"
+              className="btn-secondary"
+              aria-expanded={showPreview}
+              aria-controls="shoe-preview"
+              onClick={() => setShowPreview((value) => !value)}
+            >
+              {showPreview ? 'Ẩn mô hình 3D' : 'Xem mô hình 3D'}
+            </button>
+            {showPreview && (
+              <Suspense fallback={<p className="muted small">Đang tải mô hình 3D…</p>}>
+                <div id="shoe-preview">
+                  <ShoeViewer initialDirt={previewDirt} onDirtChange={setPreviewDirt} />
+                </div>
+              </Suspense>
+            )}
+          </div>
         </div>
       )}
 

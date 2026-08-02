@@ -262,9 +262,8 @@
         "P04-T02"
       ],
       "owner": "three-experience-engineer",
-      "status": "active",
-      "code_allowed": true,
-      "next_action": "Build adaptive 3D dirty-to-clean scene (three.js lazy chunk); locked asset licensing decision per R-009 or procedural model."
+      "status": "done",
+      "code_allowed": true
     },
     {
       "id": "P04-T04",
@@ -274,8 +273,9 @@
         "P04-T03"
       ],
       "owner": "three-experience-engineer",
-      "status": "blocked",
-      "code_allowed": true
+      "status": "active",
+      "code_allowed": true,
+      "next_action": "Add 2D/reduced-motion/device fallbacks: static poster + reduced-motion static render; no-JS fallback note."
     },
     {
       "id": "P05-T01",

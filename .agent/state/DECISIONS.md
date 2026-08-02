@@ -19,3 +19,10 @@ Use one ADR entry per approved architecture or behavior change.
 **Reason:** chỉ 2–3 route; giảm dependency + bundle; không cần SSR/nested routes.
 **Alternative:** react-router-dom — thêm khi số route tăng và cần nested/lazy layout.
 
+
+## ADR-009 — Procedural 3D model thay vì licensed GLB
+
+**Status:** accepted (2026-08-02)
+**Decision:** dựng giày 3D bằng three.js primitives (box/sphere/cylinder) + dirt texture canvas; không chờ asset GLB.
+**Reason:** R-009 — chưa có model giày có license; procedural loại bỏ rủi ro license, tự chủ hoàn toàn, chunk gzip 130.6KB (≤350KB budget). Dirty-to-clean qua material lerp + noise texture.
+**Alternative:** licensed GLB — thay được phần `buildProceduralShoe()` khi có asset hợp lệ; giữ nguyên wrapper ShoeViewer/API.
