@@ -9,3 +9,5 @@
 | R-005 | Deployment breaks admin/POS | Critical | compatibility E2E + staged rollout + rollback rehearsal | Open |
 | R-006 | Source application has not been imported into Shoe3s | Critical | Import and inventory the baseline application source before approving the Context Gate | Mitigated — baseline imported in P00-T02, inventory in asset_manifest.md |
 | R-007 | Booking/admin/payment/Supabase runtime cannot be verified | Critical | Keep implementation gates blocked until the baseline source and runtime configuration are available for audit | Open — live anon-key REST verified (P00-T03); policy export still pending for P03-T02 |
+| R-008 | Supabase policy/schema export missing for RLS lockdown (P03-T02) | High | Request export from upstream/Supabase CLI before lockdown; keep anonymous insert until API canary | Open |
+| R-009 | No licensed 3D asset available for P04-T03 | High | Source licensed GLB or build procedural model with clear license before 3D milestone | Open |

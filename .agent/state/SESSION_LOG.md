@@ -10,3 +10,11 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - CHECKLIST.md: Bước 2 done; Bước 3 (research) in progress.
 - RISKS.md: R-006 → Mitigated; R-007 updated (policy export pending).
 
+## 2026-08-02 — Research + planning complete (P01-T01, P02-T01 done)
+- Read all docs/orchestrator/ (00-08), full js/app.js, index.html, service-catalog.js, order-schema.js, orders.js, telegram.js.
+- KEY FINDING: baseline import (0a862ff) đã scaffold P01/P02 — typed catalog, Zod schema, adapters, /api/orders scaffold; `pricingMap` không còn tồn tại (evidence P00-T03 mô tả baseline cũ). `npm test`: 16/16 PASS sau npm install.
+- Gaps còn lại: Turnstile server-side, idempotency enforcement, rate limit, Telegram escape, error envelope, POS catalog duplicate.
+- Evidence: `.agent/evidence/P01-T01/research-log.md`, `.agent/evidence/P02-T01/implementation-plan.md`.
+- STATE.json: research_gate + plan_gate → approved; active_task → P03-T01 (implementation).
+- CHECKLIST.md: Bước 3, 4 done; Bước 5 (agent coordination) in progress.
+

@@ -2,9 +2,9 @@
 
 - [x] Bước 1: Khởi tạo môi trường và context
 - [x] Bước 2: Kiểm tra lại tài liệu dự án
-- [ ] Bước 3: Nghiên cứu trước khi code *(đang thực hiện)*
-- [ ] Bước 4: Lập kế hoạch triển khai
-- [ ] Bước 5: Điều phối agent thực hiện
+- [x] Bước 3: Nghiên cứu trước khi code
+- [x] Bước 4: Lập kế hoạch triển khai
+- [ ] Bước 5: Điều phối agent thực hiện *(đang thực hiện)*
 - [ ] Bước 6: Kiểm tra chất lượng trong quá trình
 - [ ] Bước 7: Báo cáo kết quả
 - [ ] Bước 8: Kiểm thử lặp trong phiên mới

@@ -165,12 +165,11 @@
         "P00-T03"
       ],
       "owner": "repo-archaeologist",
-      "status": "active",
+      "status": "done",
       "code_allowed": false,
       "required_evidence": [
         ".agent/evidence/P01-T01/"
-      ],
-      "next_action": "Read docs/orchestrator/04_DATA_API_CONTRACTS.md and baseline code; record research log with sources and options; prepare typed service catalog extraction."
+      ]
     },
     {
       "id": "P02-T01",
@@ -180,8 +179,11 @@
         "P01-T01"
       ],
       "owner": "project-orchestrator",
-      "status": "blocked",
-      "code_allowed": false
+      "status": "done",
+      "code_allowed": false,
+      "required_evidence": [
+        ".agent/evidence/P02-T01/"
+      ]
     },
     {
       "id": "P03-T01",
@@ -191,7 +193,7 @@
         "P02-T01"
       ],
       "owner": "secure-backend-engineer",
-      "status": "blocked",
+      "status": "active",
       "code_allowed": true
     },
     {
