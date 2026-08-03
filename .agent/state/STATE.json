@@ -3,7 +3,7 @@
   "project": "Shoe3s 3D Booking Upgrade",
   "repository": "pquangvinh1999-arch/Shoe3s",
   "active_actor": null,
-  "active_task": "P12-T01",
+  "active_task": "P13-T01",
   "phase": "implementation",
   "gates": {
     "context_gate": "approved",
@@ -11,11 +11,11 @@
     "plan_gate": "approved",
     "implementation_gate": "approved",
     "independent_review_gate": "approved",
-    "release_candidate_gate": "blocked",
+    "release_candidate_gate": "approved",
     "deployment_gate": "blocked"
   },
-  "last_checkpoint": "2026-08-03T01:40:00.000000+00:00",
-  "last_commit": "9a75adb",
+  "last_checkpoint": "2026-08-03T02:40:00.000000+00:00",
+  "last_commit": "60a186d",
   "risk_level": "high",
   "notes": [
     "P00-T01 bootstrap completed.",
@@ -39,6 +39,7 @@
     "P07-T01 DONE (2026-08-03): fresh-session QA loop PASS — agent_sync/context_audit/test 70/70/typecheck/build/secret scan đều PASS; catalog repo khớp 100% production DB (Management API verify). Evidence .agent/evidence/P07-T01/iterative-qa.md. independent_review_gate → approved; P08-T01 (GPT-5.6) + P08-T02 (reviewer 2) active — review commit 9012984, report tại reports/.",
     "P08/P09 DONE (2026-08-03): review GPT-5.6 78/100 (3 High), reviewer 2 63/100 (1 Critical + 5 High). Đã kiểm chứng: CRITICAL booking API insert sai cột (phone/total/pickup_address vs phone_number/total_amount/address — sẽ 500); signup mở + policy authenticated USING(true) → PII leak; XSS admin innerHTML; thiếu unique index idempotency; admin client trỏ project cũ. Roadmap: LO-TRINH-FIX-20260803.md. P10-T01 active — remediation F1→F6.",
     "P10-T01 DONE (2026-08-03): F1 buildSupabaseOrderPayload (phone_number/total_amount/address) + F4 catch 23505 replay (index đã tồn tại sẵn) + F3 esc() XSS + F2 signup disabled + is_admin() policies (verify 422/42501/200) + F6 ADR-010 superseded + F5 js/app.js migrate production với publishable key mới sb_publishable_WPMLea8mF (legacy anon key cũ đã lộ không revoke được qua Management API — owner revoke trong dashboard; RLS lockdown đã giảm rủi ro). 72/72 tests PASS, build PASS, typecheck PASS, secret scan PASS. Evidence .agent/evidence/P10-T01/remediation.md. Chờ commit → Bước 12 pipeline (release_candidate_gate/deployment_gate vẫn blocked).",
-    "Bước 12 P11-T01 DONE (2026-08-03): ci.yml (typecheck+build+test Node 22), push main, GH Actions run 30776945258 success. ADR-012: owner giữ nguyên anon+service_role tới khi hoàn thành dự án, rotate sau. release_candidate_gate → P12-T01 active: freeze SHA 9a75adb, backup/migration dry-run, preview smoke, rollback rehearsal."
+    "Bước 12 P11-T01 DONE (2026-08-03): ci.yml (typecheck+build+test Node 22), push main, GH Actions run 30776945258 success. ADR-012: owner giữ nguyên anon+service_role tới khi hoàn thành dự án, rotate sau. release_candidate_gate → P12-T01 active: freeze SHA 9a75adb, backup/migration dry-run, preview smoke, rollback rehearsal.",
+    "Bước 13 P12-T01 DONE (2026-08-03): RC freeze tag release-candidate-v1 (60a186d) + CI green; Cloudflare Pages project shoe3s (account e831569f...) tạo mới; preview 722b2c56.shoe3s.pages.dev; 5 secrets set (SUPABASE_URL/service_role/TURNSTILE/TELEGRAM); canary POST 200 (order e2d541c1 đúng cột production, source=web-3d-booking), idempotency replay không duplicate, cleanup DB sạch 0 orders; rollback rehearsal diễn tập (redeploy ~10s, DB additive, secrets qua wrangler). Sự cố: DELETE deployment_configs sai endpoint đã xóa project — recreate + set lại secrets. release_candidate_gate → approved. P13-T01 active: chờ owner chốt production domain (shoe3s.pages.dev mới vs 3shoe.pages.dev cũ)."
   ]
 }

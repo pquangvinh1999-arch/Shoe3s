@@ -377,8 +377,9 @@
         "P11-T01"
       ],
       "owner": "release-engineer",
-      "status": "active",
-      "code_allowed": false
+      "status": "done",
+      "code_allowed": false,
+      "next_action": "DONE 2026-08-03: RC tag release-candidate-v1 (60a186d), preview 722b2c56.shoe3s.pages.dev, canary+idempotency verify+cleanup, rollback rehearsal diễn tập (redeploy + secrets + DB additive). Evidence .agent/evidence/P12-T01/release-candidate.md. P13-T01 deploy chờ owner chốt production domain + promote branch main."
     },
     {
       "id": "P13-T01",
@@ -388,7 +389,7 @@
         "P12-T01"
       ],
       "owner": "release-engineer",
-      "status": "blocked",
+      "status": "active",
       "code_allowed": true
     }
   ]
