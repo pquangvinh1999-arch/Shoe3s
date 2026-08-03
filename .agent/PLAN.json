@@ -285,7 +285,7 @@
         "P04-T04"
       ],
       "owner": "test-engineer",
-      "status": "active",
+      "status": "done",
       "code_allowed": true,
       "next_action": "Module quality gates: bundle audit (booking shell ≤180KB, 3D ≤350KB), secret scan, E2E smoke, evidence complete; P03-T02 still blocked on policy export."
     },
@@ -297,7 +297,7 @@
         "P05-T01"
       ],
       "owner": "project-orchestrator",
-      "status": "blocked",
+      "status": "done",
       "code_allowed": false
     },
     {
@@ -308,7 +308,7 @@
         "P06-T01"
       ],
       "owner": "test-engineer",
-      "status": "blocked",
+      "status": "done",
       "code_allowed": true
     },
     {
@@ -319,7 +319,7 @@
         "P07-T01"
       ],
       "owner": "independent-review-coordinator",
-      "status": "blocked",
+      "status": "done",
       "code_allowed": false
     },
     {
@@ -330,7 +330,7 @@
         "P07-T01"
       ],
       "owner": "independent-review-coordinator",
-      "status": "blocked",
+      "status": "done",
       "code_allowed": false
     },
     {
@@ -342,7 +342,7 @@
         "P08-T02"
       ],
       "owner": "independent-review-coordinator",
-      "status": "blocked",
+      "status": "done",
       "code_allowed": false
     },
     {
@@ -353,8 +353,9 @@
         "P09-T01"
       ],
       "owner": "project-orchestrator",
-      "status": "blocked",
-      "code_allowed": true
+      "status": "active",
+      "code_allowed": true,
+      "next_action": "Remediation theo LO-TRINH-FIX-20260803.md: F1 insert columns, F4 idempotency index, F3 XSS escape, F2 signup/policy, F6 docs; F5 admin client migrate"
     },
     {
       "id": "P11-T01",

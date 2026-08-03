@@ -130,6 +130,23 @@ export function buildLegacyOrderData(request) {
   };
 }
 
+export function buildSupabaseOrderPayload(request) {
+  const parsed = orderRequestSchema.parse(request);
+  const items = serviceIdsToStructuredItems(parsed.service_ids);
+  return {
+    customer_name: parsed.customer_name,
+    phone_number: parsed.phone,
+    address: parsed.pickup_address,
+    note: parsed.note,
+    services: serviceIdsToLegacyServices(parsed.service_ids),
+    service_ids: parsed.service_ids,
+    service_items: serviceIdsToLegacyItems(parsed.service_ids),
+    total_amount: calculateStructuredItemsTotal(items),
+    status: ORDER_STATUS.NEW,
+    created_at: new Date().toISOString(),
+  };
+}
+
 if (typeof window !== 'undefined') {
   window.orderRequestSchema = orderRequestSchema;
   window.normalizeVietnamPhone = normalizeVietnamPhone;

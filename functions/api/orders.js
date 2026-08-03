@@ -1,4 +1,4 @@
-import { orderRequestSchema, buildLegacyOrderData } from '../../js/order-schema.js';
+import { orderRequestSchema, buildLegacyOrderData, buildSupabaseOrderPayload } from '../../js/order-schema.js';
 import { sendTelegramOrderNotification } from './telegram.js';
 
 const MAX_BODY_BYTES = 16384;
@@ -183,7 +183,7 @@ export async function onRequestPost(context) {
 
   const orderData = buildLegacyOrderData(parsed);
   const insertPayload = {
-    ...orderData,
+    ...buildSupabaseOrderPayload(parsed),
     pricing_version: 'catalog-v1',
     source: 'web-3d-booking',
     idempotency_key: parsed.idempotency_key,
@@ -202,6 +202,21 @@ export async function onRequestPost(context) {
   });
 
   if (!insertResponse.ok) {
+    let conflictKey = null;
+    try {
+      const err = await insertResponse.json();
+      if (Array.isArray(err) && err[0]?.code === '23505' && /idempotency_key/i.test(err[0]?.message || '')) {
+        conflictKey = parsed.idempotency_key;
+      }
+    } catch {
+      // ignore body parse failure
+    }
+    if (conflictKey) {
+      const raced = await findExistingOrder(apiBase, supabaseKey, conflictKey);
+      if (raced) {
+        return createSuccessResponse(raced.id, buildLegacyOrderData(parsed), requestId);
+      }
+    }
     console.error(`[orders] insert failed request_id=${requestId} status=${insertResponse.status}`);
     return createErrorResponse('INTERNAL_ERROR', 'Order could not be created', 500, requestId);
   }

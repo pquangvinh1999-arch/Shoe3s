@@ -6,6 +6,7 @@ import {
   legacyServicesToServiceIds,
   calculateStructuredItemsTotal,
   buildLegacyOrderData,
+  buildSupabaseOrderPayload,
   ORDER_STATUS,
 } from '../js/order-schema.js';
 
@@ -77,5 +78,27 @@ describe('P01-T02 order schema and compatibility adapter', () => {
     expect(order.total).toBe(290000);
     expect(order.status).toBe(ORDER_STATUS.NEW);
     expect(order.created_at).toBeTruthy();
+  });
+
+  it('builds Supabase payload with production column names (F1 fix)', () => {
+    const request = {
+      customer_name: 'Test User',
+      phone: '0382878953',
+      service_ids: ['CLEAN_STANDARD', 'REPAIR_SOLE'],
+      pickup_address: '123 Nguyễn Văn Cừ, Quận 1',
+      note: 'Giữ kỹ phần đế',
+      turnstile_token: 'token-123',
+      idempotency_key: 'c3f04595-77a0-4d64-aeb9-c2fa610b8ea6',
+    };
+
+    const row = buildSupabaseOrderPayload(request);
+    expect(row.phone_number).toBe('84382878953');
+    expect(row.total_amount).toBe(290000);
+    expect(row.address).toBe('123 Nguyễn Văn Cừ, Quận 1');
+    expect(row.phone).toBeUndefined();
+    expect(row.total).toBeUndefined();
+    expect(row.pickup_address).toBeUndefined();
+    expect(row.service_ids).toEqual(['CLEAN_STANDARD', 'REPAIR_SOLE']);
+    expect(row.status).toBe(ORDER_STATUS.NEW);
   });
 });

@@ -1,8 +1,10 @@
-// ==========================================
+        // ==========================================
         // CONFIGURATION - ĐIỀN THÔNG TIN SUPABASE
         // ==========================================
-        const SUPABASE_URL = 'https://agcvsogtqxoqlhcubghy.supabase.co'; 
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnY3Zzb2d0cXhvcWxoY3ViZ2h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDgyOTEsImV4cCI6MjA5NTMyNDI5MX0.V5N-RYin3us7SJCwTDA7Sg3OpZ5Thg6mYZGXi1XUj04';
+        // F5 (P10-T01, 2026-08-03): migrate sang production project vmakonkiotjkxlhpjwny
+        // (publishable key mới sau rotate; legacy anon key đã lộ → revoke trong dashboard)
+        const SUPABASE_URL = 'https://vmakonkiotjkxlhpjwny.supabase.co'; 
+        const SUPABASE_KEY = 'sb_publishable_WPMLea8mF-BtOWmMkJ308Q_sem38QoF';
         // ==========================================
         // BẢO MẬT: Token và Chat ID đã được chuyển lên backend (Cloudflare Functions).
         // KHÔNG khai báo plain-text ở đây nữa!
@@ -17,6 +19,13 @@
 
         // KHỞI TẠO CLIENT
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // F3: escape HTML trước khi render user data vào innerHTML (chống stored XSS)
+        function esc(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+            })[ch]);
+        }
 
         // Biến toàn cục để liên kết Đơn hàng từ Landing khi tiến hành Thanh toán
         let pendingBookingId = null;
@@ -231,7 +240,7 @@
             });
             const sortedSvc = Object.entries(svcCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
             document.getElementById('best-services').innerHTML = sortedSvc.map(([n, c]) => 
-                `<li class="flex justify-between p-2 bg-white rounded-lg">${n} <span class="font-bold">${c} lần</span></li>`
+                `<li class="flex justify-between p-2 bg-white rounded-lg">${esc(n)} <span class="font-bold">${c} lần</span></li>`
             ).join('');
 
             // Khách hàng trung thành (Số lần sử dụng dịch vụ)
@@ -243,7 +252,7 @@
             });
             const sortedCus = Object.entries(cusCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
             document.getElementById('top-customers').innerHTML = sortedCus.map(([n, c]) => 
-                `<li class="flex justify-between p-2 bg-white rounded-lg">${n} <span class="font-bold">${c} lần</span></li>`
+                `<li class="flex justify-between p-2 bg-white rounded-lg">${esc(n)} <span class="font-bold">${c} lần</span></li>`
             ).join('');
 
             initCharts(completedOrders, costs);
@@ -259,17 +268,17 @@
             }
             list.innerHTML = orders.map((o, i) => `
                 <tr class="hover:bg-white/50 transition">
-                    <td class="py-4 px-6 font-bold">${o.customer_name}<br><span class="text-xs text-slate-400">${o.phone}</span></td>
-                    <td class="py-4 px-6 text-slate-600">${o.services}</td>
+                    <td class="py-4 px-6 font-bold">${esc(o.customer_name)}<br><span class="text-xs text-slate-400">${esc(o.phone)}</span></td>
+                    <td class="py-4 px-6 text-slate-600">${esc(o.services)}</td>
                     <td class="py-4 px-6">${new Date(o.created_at).toLocaleDateString('vi-VN')}</td>
                     <td class="py-4 px-6">
                         <span class="${o.status === 'Đã hoàn thành' ? 'bg-emerald-100 text-emerald-600' : 'bg-orange-100 text-orange-600'} px-2 py-1 rounded-lg text-xs font-bold">
-                            ${o.status}
+                            ${esc(o.status)}
                         </span>
                     </td>
                     <td class="py-4 px-6">
                         ${o.status === 'Chờ nhận đơn' ? 
-                        `<button onclick="completeOrder('${o.id}')" class="bg-sky-500 text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-sky-600 transition">Hoàn thành</button>` : 
+                        `<button onclick="completeOrder('${esc(o.id)}')" class="bg-sky-500 text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-sky-600 transition">Hoàn thành</button>` : 
                         `<i class="fa-solid fa-circle-check text-emerald-500"></i>`}
                     </td>
                 </tr>
@@ -286,12 +295,12 @@
             }
             list.innerHTML = bookings.map(b => `
                 <tr class="hover:bg-white/50 transition">
-                    <td class="py-4 px-6 font-bold text-slate-700">${b.customer_name}</td>
-                    <td class="py-4 px-6 font-mono">${b.phone}</td>
-                    <td class="py-4 px-6 text-slate-600">${b.services}</td>
+                    <td class="py-4 px-6 font-bold text-slate-700">${esc(b.customer_name)}</td>
+                    <td class="py-4 px-6 font-mono">${esc(b.phone)}</td>
+                    <td class="py-4 px-6 text-slate-600">${esc(b.services)}</td>
                     <td class="py-4 px-6">${new Date(b.created_at).toLocaleDateString('vi-VN')}</td>
                     <td class="py-4 px-6 text-center">
-                        <button onclick="checkoutBooking('${b.id}', '${b.customer_name.replace(/'/g, "\\'")}', '${b.phone}', '${b.services.replace(/'/g, "\\'")}')" class="bg-sky-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-sky-600 transition shadow-sm inline-flex items-center gap-1">
+                        <button onclick="checkoutBooking('${esc(b.id)}', '${esc(b.customer_name).replace(/'/g, "\\'")}', '${esc(b.phone)}', '${esc(b.services).replace(/'/g, "\\'")}')" class="bg-sky-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-sky-600 transition shadow-sm inline-flex items-center gap-1">
                             <i class="fa-solid fa-credit-card"></i> Thanh toán
                         </button>
                     </td>
@@ -359,7 +368,7 @@
             list.innerHTML = costs.map(c => {
                 total += c.amount;
                 return `<li class="flex justify-between p-3 bg-white/60 rounded-xl border border-white shadow-sm">
-                    <span class="text-sm font-bold text-slate-700">${c.description} <small class="text-slate-400 ml-2">${c.type}</small></span>
+                    <span class="text-sm font-bold text-slate-700">${esc(c.description)} <small class="text-slate-400 ml-2">${esc(c.type)}</small></span>
                     <div class="text-right">
                         <span class="block text-rose-500 font-bold">-${c.amount.toLocaleString()} ₫</span>
                         <span class="text-[9px] text-slate-400">${new Date(c.created_at).toLocaleString('vi-VN')}</span>
@@ -390,8 +399,8 @@
             const list = document.getElementById('customer-list');
             list.innerHTML = Object.keys(customers).map(phone => `
                 <tr class="border-b border-white hover:bg-white/50 transition">
-                    <td class="py-4 px-6 font-bold">${customers[phone].name}</td>
-                    <td class="py-4 px-6 font-mono">${phone}</td>
+                    <td class="py-4 px-6 font-bold">${esc(customers[phone].name)}</td>
+                    <td class="py-4 px-6 font-mono">${esc(phone)}</td>
                     <td class="py-4 px-6">${customers[phone].count} lần</td>
                     <td class="py-4 px-6 text-yellow-500"><i class="fa-solid fa-star"></i> 5/5</td>
                     <td class="py-4 px-6 font-bold text-sky-600">${customers[phone].total.toLocaleString()} ₫</td>
@@ -442,7 +451,7 @@
                 return `
                     <div class="flex flex-col p-3 bg-white/80 rounded-xl border border-white shadow-sm transition hover:border-sky-300">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-extrabold text-slate-700 leading-tight">${s.n}</span>
+                            <span class="text-xs font-extrabold text-slate-700 leading-tight">${esc(s.n)}</span>
                             ${isCustom ? 
                                 `<input type="number" id="price-input-${safeId}" placeholder="Giá thỏa thuận..." value="${item.currentPrice || ''}" oninput="updateOfflineCustomPrice('${s.n}', this.value)" class="w-24 text-right px-2 py-1 text-xs border border-sky-100 rounded-lg outline-none focus:ring-1 focus:ring-sky-500 font-bold text-sky-600" />`
                                 : `<span class="text-xs font-black text-sky-600">${s.p.toLocaleString()}₫</span>`
@@ -541,7 +550,7 @@
             } else {
                 let html = items.map(it => `
                     <div class="flex justify-between text-[9px] gap-2">
-                        <span class="truncate">${it.name} (x${it.qty})</span>
+                        <span class="truncate">${esc(it.name)} (x${it.qty})</span>
                         <span class="flex-shrink-0">${it.subtotal.toLocaleString()}₫</span>
                     </div>
                 `).join('');

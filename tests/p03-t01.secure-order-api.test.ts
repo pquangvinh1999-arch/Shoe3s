@@ -222,7 +222,10 @@ describe('P03-T01 secure order API', () => {
       const insertCall = fetchMock.mock.calls[2];
       expect(insertCall[0]).toContain('/rest/v1/orders');
       const insertBody = JSON.parse(insertCall[1].body)[0];
-      expect(insertBody.total).toBe(290000);
+      expect(insertBody.total_amount).toBe(290000);
+      expect(insertBody.total).toBeUndefined();
+      expect(insertBody.phone_number).toBe('84382878953');
+      expect(insertBody.phone).toBeUndefined();
       expect(insertBody.status).toBe('Chờ thanh toán');
       expect(insertBody.source).toBe('web-3d-booking');
       expect(insertBody.idempotency_key).toBe(VALID_PAYLOAD.idempotency_key);
@@ -258,6 +261,20 @@ describe('P03-T01 secure order API', () => {
       const response = await onRequestPost(makeContext(different, ENV));
       expect(response.status).toBe(409);
       expect((await response.json()).code).toBe('IDEMPOTENCY_CONFLICT');
+    });
+
+    it('replays raced duplicate insert (23505 on idempotency_key) as success', async () => {
+      fetchMock
+        .mockResolvedValueOnce(jsonResponse({ success: true })) // turnstile
+        .mockResolvedValueOnce(jsonResponse([])) // lookup miss
+        .mockResolvedValueOnce(jsonResponse([{ code: '23505', message: 'duplicate key value violates unique constraint "orders_idempotency_key_idx"' }], 409)) // insert conflict
+        .mockResolvedValueOnce(jsonResponse([{ id: 'raced-1' }])); // re-find existing
+
+      const response = await onRequestPost(makeContext(VALID_PAYLOAD, ENV));
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body.ok).toBe(true);
+      expect(body.order_id).toBe('raced-1');
     });
 
     it('returns INTERNAL_ERROR without leaking internals when insert fails', async () => {

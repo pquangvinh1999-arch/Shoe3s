@@ -104,3 +104,24 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - Verify: anon SELECT services 200+4 rows; anon SELECT/INSERT orders 401 42501; anon INSERT order_items 401 42501; pg_policies = 4 policies mới.
 - Booking API (service_role bypass) không ảnh hưởng. Evidence: `.agent/evidence/P03-T02/rls-lockdown-applied.md`; PLAN.json P03-T02 → done.
 - Next: checkpoint P05-T01 (implementation_gate) → Bước 7 progress report. Rotate anon key production (đã paste chat + dùng probe).
+
+## 2026-08-03 — Bước 7: P06-T01 progress report done; P07-T01 active
+- Commit 9012984: RLS lockdown migration + catalog sync test fixes (16 files).
+- Tạo `.agent/evidence/P06-T01/implementation-status.md`: Completed/Remaining/Decisions/Architecture/Risks/Tests/Next.
+- STATE.json: implementation_gate → approved; active_task → P07-T01. PLAN.json: P05-T01+P06-T01 done, P07-T01 active.
+- CHECKLIST: Bước 7 done. CURRENT_TASK.md → P07-T01 (fresh-session iterative QA).
+- Next: chạy P07-T01 QA loop → mở independent_review_gate cho P08.
+
+## 2026-08-03 — Bước 8 done: P07-T01 QA loop PASS; mở P08 independent review
+- Fresh-session QA: agent_sync/context_audit PASS, npm test 70/70, typecheck PASS, build PASS (61.61KB/131.44KB gzip), secret_scan PASS.
+- Cross-session consistency: catalog repo (4 services) khớp 100% production DB qua Management API (CLEAN_STANDARD 90K, CLEAN_PREMIUM 150K, REPAIR_SOLE 200K, PROTECT_NANO 80K).
+- Evidence: .agent/evidence/P07-T01/iterative-qa.md. P07-T01 → done.
+- STATE.json: independent_review_gate → approved; active_task → P08-T01. PLAN.json: P07-T01 done, P08-T01/T02 active. CHECKLIST Bước 8 done.
+- Next: P08-T01 (GPT-5.6) + P08-T02 (reviewer 2) review commit 9012984 → reports/09_independent-review.md → P09 consensus.
+
+## 2026-08-03 — Bước 9+10: independent reviews + consensus roadmap
+- P08-T01 (GPT-5.6): 78/100 CONDITIONAL APPROVE — 0 Critical, 3 High (policy authenticated USING(true), ADR-010/011 conflict, admin client project cũ). Report: reports/09_independent-review-gpt.md.
+- P08-T02 (reviewer 2): 63/100 REQUEST-CHANGES — 1 Critical (booking API insert sai cột schema → 500), 5 High (XSS admin innerHTML, project mismatch, race idempotency, canary chưa chạy). Report: reports/09_independent-review-second.md.
+- Kiểm chứng bất đồng: CONFIRMED F1 (buildLegacyOrderData phone/total/pickup_address vs DB phone_number/total_amount/address — Management API probe); CONFIRMED signup mở disable_signup=false → authenticated USING(true) = PII leak; CONFIRMED XSS app.js:262/289/294/393; CONFIRMED thiếu unique index idempotency_key.
+- LO-TRINH-FIX-20260803.md tạo: F1 (critical, insert cột) → F4 (index idempotency) → F3 (XSS) → F2 (signup+policy) → F6 (docs) → F5 (admin client migrate, tách riêng).
+- P08-T01/T02 + P09-T01 → done; P10-T01 active. CHECKLIST Bước 9+10 done, Bước 11 active.

@@ -6,11 +6,11 @@
 - [x] Bước 4: Lập kế hoạch triển khai
 - [x] Bước 5: Điều phối agent thực hiện *(P03/P04 code-allowed hoàn tất; P03-T02 RLS lockdown applied 2026-08-03)*
 - [x] Bước 6: Kiểm tra chất lượng trong quá trình *(audit + remediation pass; exit criteria đạt — R-008 closed)*
-- [ ] Bước 7: Báo cáo kết quả
-- [ ] Bước 8: Kiểm thử lặp trong phiên mới
-- [ ] Bước 9: Đánh giá độc lập GPT-5.6 và reviewer thứ hai
-- [ ] Bước 10: Tổng hợp kết quả review
-- [ ] Bước 11: Hoàn thiện dự án theo báo cáo
+- [x] Bước 7: Báo cáo kết quả *(P06-T01 done — evidence .agent/evidence/P06-T01/implementation-status.md)*
+- [x] Bước 8: Kiểm thử lặp trong phiên mới *(P07-T01 done — 70/70, build, secret scan, catalog↔DB khớp)*
+- [x] Bước 9: Đánh giá độc lập GPT-5.6 và reviewer thứ hai *(78/100 + 63/100; reports/09_*.md)*
+- [x] Bước 10: Tổng hợp kết quả review *(LO-TRINH-FIX-20260803.md — F1..F6)*
+- [ ] Bước 11: Hoàn thiện dự án theo báo cáo *(P10-T01 active: F1..F6)*
 - [ ] Bước 12: Commit, push và kiểm tra GitHub pipeline
 - [ ] Bước 13: Release candidate và rollback rehearsal
 - [ ] Bước 14: Deploy Cloudflare

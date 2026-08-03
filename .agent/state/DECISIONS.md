@@ -37,7 +37,7 @@ Use one ADR entry per approved architecture or behavior change.
 
 ## ADR-010 — Xác nhận nguồn sự thật: Supabase project / catalog
 
-**Status:** resolved (2026-08-03) — owner xác nhận: production project `vmakonkiotjkxlhpjwny`, catalog chuẩn = repo 7 services; rotation service key đã bị chia sẻ trong chat.
+**Status:** resolved (2026-08-03) — owner xác nhận: production project `vmakonkiotjkxlhpjwny`; **superseded bởi ADR-011** (catalog chuẩn = production DB 4 services, không phải 7 services repo cũ; repo đã sync theo DB). Rotation service key đã bị chia sẻ trong chat.
 **Decision:**
 1. **Project production = `vmakonkiotjkxlhpjwny`** (project service key đang trỏ, có bảng orders/services/order_items) — KHÔNG phải `agcvsogtqxoqlhcubghy` (anon key legacy debug trong `js/app.js`).
 2. **Catalog chuẩn = repo `js/service-catalog.js` (7 services)** — DB (4 services) sẽ được đồng bộ/khớp theo repo khi RLS cutover (P03-T02).
