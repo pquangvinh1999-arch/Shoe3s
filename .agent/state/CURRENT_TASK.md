@@ -1,23 +1,28 @@
 # Current Task
 
-- Task ID: `P10-T01`
-- Owner: `project-orchestrator`
-- Status: `done` (2026-08-03, commit `c88d8c2`) — remediation F1–F6 hoàn tất.
-- Depends on: `P09-T01` (done — consensus roadmap).
-- Gates: `independent_review_gate = approved`; `release_candidate_gate`/`deployment_gate` = blocked → chờ Bước 12 (P11 push/CI).
+- Task ID: `P14-T01`
+- Owner: `three-experience-engineer`
+- Status: `done` (2026-08-03, working tree — chờ owner chốt commit/push/redeploy).
+- Depends on: `P13-T01` (done — production live).
+- Gates: tất cả approved; P14 là vòng remediation theo checklist Bước 15.
 
-## Completed fixes (verify evidence .agent/evidence/P10-T01/remediation.md)
-- **F1 (Critical)**: booking insert dùng `buildSupabaseOrderPayload` → cột production `phone_number`/`total_amount`/`address`; giữ `buildLegacyOrderData` cho response/telegram.
-- **F4 (High)**: catch 23505 → replay raced duplicate; unique index `orders_idempotency_key_uq` đã tồn tại sẵn (verify pg_indexes), migration file = idempotent safeguard.
-- **F3 (High)**: `esc()` + escape mọi sink innerHTML user-data trong `js/app.js`.
-- **F2 (High)**: `disable_signup=true` (verify signup 422); policy orders → `is_admin()` (SECURITY DEFINER); verify anon orders 42501, services 200.
-- **F6 (Medium)**: ADR-010 marked superseded by ADR-011.
-- **F5 (High)**: `js/app.js` → production `vmakonkiotjkxlhpjwny` với publishable key mới `sb_publishable_WPMLea8mF...` (chưa từng lộ; verify REST 200/42501); `asset_inventory.json` cập nhật.
+## Vấn đề (owner report: "production UI không đúng 3D như goal ở plan")
+- **Root cause**: ADR-008 giữ routing legacy → `resolveRoute('', '/')` = `admin`; `https://shoe3s.pages.dev/` (bare root) render `AdminPage` stub "Khu vực quản trị", không phải trang booking 3D. 3D chỉ tồn tại ở `/?page=order` + nằm khuất bước 4 wizard sau nút toggle.
+- **Gap vs goal** (docs/02_3D_UX_SPEC.md + MASTER_CONTEXT): thiếu 3D hero, thiếu câu chuyện "giày bẩn → xử lý → sạch/phục hồi" (before/after).
+
+## Changes (working tree)
+1. `apps/web/src/app/router.ts` + `tests/p04-t01.router.test.ts`: `/` + `''` → **booking** (public landing 3D — goal); giữ `?page=order`, `/booking/` → booking; `?page=admin` → admin (compatibility). Router test cập nhật theo rule MASTER_CONTEXT "compatibility redirect/test".
+2. `apps/web/src/pages/AdminPage.tsx`: auto-redirect `/admin/` (legacy admin entry giữ nguyên qua path real dashboard).
+3. `apps/web/src/pages/BookingPage.tsx`: **3D hero** (lazy ShoeViewer, controlled `dirt`, preset chips Trước/Vừa/Sau) + story 3 bước + `#services` giữ CTA anchor.
+4. `apps/web/src/features/viewer/ShoeViewer.tsx`: thêm prop controlled `dirt` (wizard vẫn uncontrolled — API cũ không đổi).
+5. `apps/web/src/features/viewer/BeforeAfter.tsx` (new): so sánh Trước/Sau bằng poster 2D (`drawPoster`) — không tốn WebGL context thứ 2, hoạt động cả Tier 0.
+6. `apps/web/src/styles.css`: hero-grid, preset-chip, story-strip/card, ba-*.
 
 ## Verification
-- 72/72 tests PASS · build PASS · typecheck PASS · secret scan PASS · agent_sync OK · context_audit PASS.
+- `npm test`: **73/73 PASS** (9 files) · `npm run build`: PASS — shell 61.62KB / ShoeViewer 87.87KB / BeforeAfter 0.60KB gzip (budget ≤180KB/≤350KB ✓).
+- `python scripts/secret_scan.py --changed`: PASS · agent_sync OK · context_audit PASS.
 
 ## Next action
-1. **Owner action**: revoke legacy anon key cũ trong Dashboard → Settings → API keys (Management API không hỗ trợ — id `anon` không phải UUID); rotate legacy service_role key trước release.
-2. Bước 12: `P11-T01` push branch/PR + CI green (cần GitHub/Cloudflare access từ owner).
-3. Bước 13: `P12-T01` release candidate + rollback rehearsal. Bước 14: `P13-T01` deploy + canary POST thật `/api/orders`.
+1. Owner chốt → commit + push main → Cloudflare Pages redeploy (prod branch main).
+2. Verify production: GET `/` → booking hero 3D (200); `/?page=order` → booking; `/admin/` → legacy dashboard; `/?page=admin` → redirect.
+3. Sau đó: revoke legacy anon key + rotate service_role (ADR-012, ngoài scope P14).

@@ -11,6 +11,7 @@
 - [x] Bước 9: Đánh giá độc lập GPT-5.6 và reviewer thứ hai *(78/100 + 63/100; reports/09_*.md)*
 - [x] Bước 10: Tổng hợp kết quả review *(LO-TRINH-FIX-20260803.md — F1..F6)*
 - [x] Bước 11: Hoàn thiện dự án theo báo cáo *(P10-T01 done 2026-08-03 — commit c88d8c2: F1 insert cột, F4 idempotency replay, F3 XSS, F2 signup+policy, F6 docs, F5 client production; 72/72 tests, build/typecheck/secret PASS; evidence .agent/evidence/P10-T01/remediation.md)*
-- [ ] Bước 12: Commit, push và kiểm tra GitHub pipeline *(owner: revoke legacy anon key dashboard + rotate service_role; chờ GitHub/Cloudflare access)*
-- [ ] Bước 13: Release candidate và rollback rehearsal
+- [x] Bước 12: Commit, push và kiểm tra GitHub pipeline *(P11-T01 done 2026-08-03 — ci.yml Node 22, GH Actions run 30776945258 green)*
+- [x] Bước 13: Release candidate và rollback rehearsal *(P12-T01 done 2026-08-03 — RC tag release-candidate-v1, preview smoke, canary+idempotency, rollback rehearsal; evidence .agent/evidence/P12-T01/release-candidate.md)*
 - [x] Bước 14: Deploy Cloudflare *(P13-T01 done 2026-08-03 — production https://shoe3s.pages.dev live; admin /admin/ + turnstile widget + admin user verified; evidence .agent/evidence/P13-T01/production-deploy.md)*
+- [ ] Bước 15: Remediation 3D hero + before/after story *(P14-T01: router `/` → booking landing (trước đó production `/` hiện admin gate — sai goal 3D), 3D hero + slider bẩn→sạch + preset Trước/Sau, story 3 bước, BeforeAfter poster 2D; 73/73 tests, build PASS; chờ owner chốt → commit/push → Cloudflare redeploy → verify production `/`)*

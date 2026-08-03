@@ -13,18 +13,20 @@ import { drawPoster, supportsWebGL } from './poster.ts';
 type Props = {
   initialDirt?: number;
   onDirtChange?: (factor: number) => void;
+  dirt?: number;
 };
 
 type Mode = '3d' | 'poster';
 
-export function ShoeViewer({ initialDirt = 0.4, onDirtChange }: Props) {
-  return <ShoeViewerInner initialDirt={initialDirt} onDirtChange={onDirtChange} />;
+export function ShoeViewer({ initialDirt = 0.4, onDirtChange, dirt: controlledDirt }: Props) {
+  return <ShoeViewerInner initialDirt={initialDirt} onDirtChange={onDirtChange} controlledDirt={controlledDirt} />;
 }
 
-function ShoeViewerInner({ initialDirt = 0.4, onDirtChange }: Props) {
+function ShoeViewerInner({ initialDirt = 0.4, onDirtChange, controlledDirt }: Props & { controlledDirt?: number }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const posterCanvasRef = useRef<HTMLCanvasElement>(null);
-  const [dirt, setDirt] = useState(initialDirt);
+  const [dirt, setDirt] = useState(controlledDirt ?? initialDirt);
+  const effectiveDirt = controlledDirt ?? dirt;
   const [interactive, setInteractive] = useState(true);
   const [mode, setMode] = useState<Mode>(() => (supportsWebGL() ? '3d' : 'poster'));
 
@@ -142,14 +144,14 @@ function ShoeViewerInner({ initialDirt = 0.4, onDirtChange }: Props) {
   }, [mode]);
 
   useEffect(() => {
-    onDirtChange?.(dirt);
+    onDirtChange?.(effectiveDirt);
 
     if (mode === 'poster') {
       const canvas = posterCanvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
-      drawPoster(ctx, dirt, canvas.width, 7);
+      drawPoster(ctx, effectiveDirt, canvas.width, 7);
       return;
     }
 
@@ -157,16 +159,16 @@ function ShoeViewerInner({ initialDirt = 0.4, onDirtChange }: Props) {
     if (!parts.length || !adapter) return;
 
     stateRef.current.texture?.dispose();
-    const texture = createDirtTexture(adapter.dirtTextureSize, dirt);
+    const texture = createDirtTexture(adapter.dirtTextureSize, effectiveDirt);
     stateRef.current.texture = texture;
     parts.forEach((part) => {
       const material = part.mesh.material as THREE.MeshStandardMaterial;
       material.map = texture;
       material.needsUpdate = true;
     });
-    applyDirtToParts(parts, dirt);
+    applyDirtToParts(parts, effectiveDirt);
     render();
-  }, [dirt, mode, onDirtChange]);
+  }, [effectiveDirt, mode, onDirtChange]);
 
   return (
     <div className="viewer-wrap">
@@ -188,15 +190,19 @@ function ShoeViewerInner({ initialDirt = 0.4, onDirtChange }: Props) {
         />
       )}
       <label className="dirt-slider">
-        Mức độ bẩn: <strong>{Math.round(dirt * 100)}%</strong>
+        Mức độ bẩn: <strong>{Math.round(effectiveDirt * 100)}%</strong>
         <input
           type="range"
           min={0}
           max={1}
           step={0.05}
-          value={dirt}
+          value={effectiveDirt}
           aria-label="Mức độ bẩn của giày"
-          onChange={(event) => setDirt(Number(event.target.value))}
+          onChange={(event) => {
+            const next = Number(event.target.value);
+            if (controlledDirt === undefined) setDirt(next);
+            onDirtChange?.(next);
+          }}
         />
       </label>
       {mode === 'poster' ? (

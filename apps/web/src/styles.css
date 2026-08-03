@@ -97,3 +97,143 @@ body {
   border-radius: 1rem;
   text-align: center;
 }
+
+.hero-grid {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.hero-copy .cta {
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.hero-viewer {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.hero-viewer .viewer-canvas {
+  min-height: 340px;
+}
+
+.preset-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.preset-chip {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.preset-chip.active {
+  background: var(--cyan-500);
+  color: var(--ink-950);
+  border-color: var(--cyan-500);
+}
+
+.story-strip {
+  padding: 3rem 1.5rem 1rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.story-strip h2,
+.section-title {
+  color: var(--navy-800);
+}
+
+.story-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.story-card {
+  background: #fff;
+  border: 1px solid rgba(11, 43, 70, 0.12);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.story-step {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--navy-800);
+  color: #fff;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.story-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--navy-800);
+}
+
+.story-card p {
+  margin: 0;
+  color: #5b6b7c;
+  line-height: 1.55;
+}
+
+.ba-section {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.ba-section h2 {
+  color: var(--navy-800);
+}
+
+.ba-section .muted {
+  color: #5b6b7c;
+}
+
+.ba-row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.ba-figure {
+  margin: 0;
+  background: #fff;
+  border: 1px solid rgba(11, 43, 70, 0.12);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.ba-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0.625rem;
+  background: #0b2b46;
+}
+
+.ba-figure figcaption {
+  margin-top: 0.625rem;
+  font-weight: 700;
+  color: var(--navy-800);
+}
+
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
