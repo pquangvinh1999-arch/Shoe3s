@@ -13,4 +13,4 @@
 - [x] Bước 11: Hoàn thiện dự án theo báo cáo *(P10-T01 done 2026-08-03 — commit c88d8c2: F1 insert cột, F4 idempotency replay, F3 XSS, F2 signup+policy, F6 docs, F5 client production; 72/72 tests, build/typecheck/secret PASS; evidence .agent/evidence/P10-T01/remediation.md)*
 - [ ] Bước 12: Commit, push và kiểm tra GitHub pipeline *(owner: revoke legacy anon key dashboard + rotate service_role; chờ GitHub/Cloudflare access)*
 - [ ] Bước 13: Release candidate và rollback rehearsal
-- [ ] Bước 14: Deploy Cloudflare
+- [x] Bước 14: Deploy Cloudflare *(P13-T01 done 2026-08-03 — production https://shoe3s.pages.dev live; admin /admin/ + turnstile widget + admin user verified; evidence .agent/evidence/P13-T01/production-deploy.md)*

@@ -389,8 +389,9 @@
         "P12-T01"
       ],
       "owner": "release-engineer",
-      "status": "active",
-      "code_allowed": true
+      "status": "done",
+      "code_allowed": true,
+      "next_action": "DONE 2026-08-03: production shoe3s.pages.dev live (deploy 3e62b729), turnstile widget thật site key 0x4AAAAAAEEz9KpFzEoqK8Y2 (bỏ local-demo-token), admin user ten11vip@gmail.com role=admin tạo + verify login/SELECT orders 200, admin dashboard /admin/ serve (js/app.js → production publishable key), canary+idempotency verified, DB sạch."
     }
   ]
 }
