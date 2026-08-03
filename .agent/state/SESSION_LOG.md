@@ -129,3 +129,4 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - Legacy anon key cũ (đã lộ) KHÔNG revoke được qua Management API (id "anon" không phải UUID, POST /revoke 404) → owner revoke trong Dashboard → Settings → API keys; publishable key thay thế cho client, chưa từng lộ.
 - Gates: 72/72 tests PASS, build PASS, typecheck PASS, secret scan PASS, agent_sync OK, context_audit PASS.
 - State: P10-T01 → done; CHECKLIST Bước 11 → done; Bước 12 (P11 push/CI) chờ owner: revoke key + GitHub/Cloudflare access.
+- Bước 12 P11-T01 DONE (2026-08-03): tạo .github/workflows/ci.yml (Node 22: typecheck → build → test), push main (c8f408a..9a75adb, 4 commits P10+CI), GitHub Actions run 30776945258 SUCCESS. ADR-012: owner quyết định giữ anon+service_role keys tới completion, rotate sau. P12-T01 active (release candidate + rollback rehearsal).

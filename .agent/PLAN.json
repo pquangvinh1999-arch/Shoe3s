@@ -365,8 +365,9 @@
         "P10-T01"
       ],
       "owner": "release-engineer",
-      "status": "blocked",
-      "code_allowed": true
+      "status": "done",
+      "code_allowed": true,
+      "next_action": "DONE 2026-08-03: ci.yml added (typecheck+build+test Node 22), push main c8f408a..9a75adb, GH Actions run 30776945258 success. P12-T01 next."
     },
     {
       "id": "P12-T01",
@@ -376,7 +377,7 @@
         "P11-T01"
       ],
       "owner": "release-engineer",
-      "status": "blocked",
+      "status": "active",
       "code_allowed": false
     },
     {
