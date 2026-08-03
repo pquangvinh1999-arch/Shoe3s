@@ -2,16 +2,22 @@
 
 - Task ID: `P10-T01`
 - Owner: `project-orchestrator`
-- Status: `active` — remediation theo LO-TRINH-FIX-20260803.md
+- Status: `done` (2026-08-03, commit `c88d8c2`) — remediation F1–F6 hoàn tất.
 - Depends on: `P09-T01` (done — consensus roadmap).
-- Allowed: code + tests + docs + evidence (remediation F1–F6).
-- Gate state: `independent_review_gate = approved`. Release candidate gate chờ remediation hoàn tất.
-- Fixes (ưu tiên):
-  - **F1 (Critical)**: booking API insert sai cột schema production — `buildLegacyOrderData` trả `phone`/`total`/`pickup_address` nhưng DB có `phone_number`/`total_amount`/`address` → 500. Map đúng cột.
-  - **F2 (High)**: signup mở (`disable_signup=false`) + policy authenticated `USING(true)` → PII leak. Tắt signup + thu hẹp policy theo admin claim.
-  - **F3 (High)**: XSS admin — escape HTML tại 4 sink `innerHTML` (app.js:262/289/294/393).
-  - **F4 (High)**: unique partial index `idempotency_key` + catch 23505 → replay.
-  - **F5 (High)**: migrate admin/POS client `js/app.js` → production project (cần anon key mới; tách riêng sau F1-F4).
-  - **F6 (Medium)**: docs — ADR-010 ghi chú superseded bởi ADR-011.
-- Verify sau mỗi fix: tests + build; F2/F4 cần probe thật qua Management API/anon.
-- Next action: F1 → F4 → F3 → F2 → F6 → F5 → canary POST thật → P10 done → Bước 12 (pipeline) → 13 (release candidate).
+- Gates: `independent_review_gate = approved`; `release_candidate_gate`/`deployment_gate` = blocked → chờ Bước 12 (P11 push/CI).
+
+## Completed fixes (verify evidence .agent/evidence/P10-T01/remediation.md)
+- **F1 (Critical)**: booking insert dùng `buildSupabaseOrderPayload` → cột production `phone_number`/`total_amount`/`address`; giữ `buildLegacyOrderData` cho response/telegram.
+- **F4 (High)**: catch 23505 → replay raced duplicate; unique index `orders_idempotency_key_uq` đã tồn tại sẵn (verify pg_indexes), migration file = idempotent safeguard.
+- **F3 (High)**: `esc()` + escape mọi sink innerHTML user-data trong `js/app.js`.
+- **F2 (High)**: `disable_signup=true` (verify signup 422); policy orders → `is_admin()` (SECURITY DEFINER); verify anon orders 42501, services 200.
+- **F6 (Medium)**: ADR-010 marked superseded by ADR-011.
+- **F5 (High)**: `js/app.js` → production `vmakonkiotjkxlhpjwny` với publishable key mới `sb_publishable_WPMLea8mF...` (chưa từng lộ; verify REST 200/42501); `asset_inventory.json` cập nhật.
+
+## Verification
+- 72/72 tests PASS · build PASS · typecheck PASS · secret scan PASS · agent_sync OK · context_audit PASS.
+
+## Next action
+1. **Owner action**: revoke legacy anon key cũ trong Dashboard → Settings → API keys (Management API không hỗ trợ — id `anon` không phải UUID); rotate legacy service_role key trước release.
+2. Bước 12: `P11-T01` push branch/PR + CI green (cần GitHub/Cloudflare access từ owner).
+3. Bước 13: `P12-T01` release candidate + rollback rehearsal. Bước 14: `P13-T01` deploy + canary POST thật `/api/orders`.

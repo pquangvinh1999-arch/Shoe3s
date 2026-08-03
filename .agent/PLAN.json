@@ -353,9 +353,9 @@
         "P09-T01"
       ],
       "owner": "project-orchestrator",
-      "status": "active",
+      "status": "done",
       "code_allowed": true,
-      "next_action": "Remediation theo LO-TRINH-FIX-20260803.md: F1 insert columns, F4 idempotency index, F3 XSS escape, F2 signup/policy, F6 docs; F5 admin client migrate"
+      "next_action": "DONE 2026-08-03 (commit c88d8c2): F1 insert columns production (buildSupabaseOrderPayload), F4 idempotency 23505 replay (index có sẵn), F3 XSS esc(), F2 signup disabled + is_admin() policies (verify 422/42501/200), F6 ADR-010 superseded, F5 js/app.js migrate production publishable key (legacy anon key cũ chờ owner revoke dashboard). 72/72 tests, build/typecheck/secret scan PASS."
     },
     {
       "id": "P11-T01",
