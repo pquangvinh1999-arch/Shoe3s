@@ -1,7 +1,9 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { getServiceCatalog } from '../../../../../js/service-catalog';
 import { tokens } from '../../design/tokens.ts';
 import { createIdempotencyKey, validPhone, computeQuote, submitOrder, type SubmitResult } from './api.ts';
+
+const TURNSTILE_SITE_KEY = '0x4AAAAAAEEz9KpFzEoqK8Y2';
 
 const ShoeViewer = lazy(() => import('../viewer/ShoeViewer.tsx'));
 
@@ -28,6 +30,25 @@ export function BookingWizard() {
   const [result, setResult] = useState<SubmitResult | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [previewDirt, setPreviewDirt] = useState(0.4);
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    const container = turnstileRef.current;
+    if (!container || typeof window === 'undefined') return;
+    const w = window as unknown as { turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => string; reset: (id: string) => void } };
+    if (!w.turnstile) return;
+    widgetIdRef.current = w.turnstile.render(container, {
+      sitekey: TURNSTILE_SITE_KEY,
+      callback: (token: unknown) => setTurnstileToken(typeof token === 'string' ? token : ''),
+      'expired-callback': () => setTurnstileToken(''),
+      'error-callback': () => setTurnstileToken(''),
+    });
+    return () => {
+      if (widgetIdRef.current && w.turnstile) w.turnstile.reset(widgetIdRef.current);
+    };
+  }, []);
 
   const quote = computeQuote(services.filter((service) => selected.includes(service.id)));
 
@@ -42,6 +63,10 @@ export function BookingWizard() {
 
   async function handleSubmit() {
     if (submitting) return;
+    if (!turnstileToken) {
+      setError('Vui lòng hoàn tất xác minh không phải robot trước khi gửi.');
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
@@ -51,13 +76,18 @@ export function BookingWizard() {
         service_ids: selected,
         pickup_address: pickupAddress.trim() || undefined,
         note: note.trim() || undefined,
-        turnstile_token: 'local-demo-token',
+        turnstile_token: turnstileToken,
         idempotency_key: idempotencyKey,
       });
       setResult(res);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Lỗi gửi đơn hàng');
       setIdempotencyKey(createIdempotencyKey());
+      const w = window as unknown as { turnstile?: { reset: (id: string) => void } };
+      if (widgetIdRef.current && w.turnstile) {
+        w.turnstile.reset(widgetIdRef.current);
+        setTurnstileToken('');
+      }
     } finally {
       setSubmitting(false);
     }
@@ -207,6 +237,10 @@ export function BookingWizard() {
             Khách: {name} — {phone}
             {pickupAddress ? ` — ${pickupAddress}` : ''}
           </p>
+          <div className="turnstile-box">
+            <div ref={turnstileRef} />
+            {!turnstileToken && <p className="muted small">Vui lòng hoàn tất xác minh không phải robot.</p>}
+          </div>
 
           <div className="preview">
             <button
@@ -245,7 +279,7 @@ export function BookingWizard() {
             Tiếp tục
           </button>
         ) : (
-          <button type="submit" className="cta" disabled={submitting}>
+          <button type="submit" className="cta" disabled={submitting || !turnstileToken}>
             {submitting ? 'Đang gửi…' : 'Xác nhận đặt lịch'}
           </button>
         )}
@@ -295,6 +329,7 @@ export function BookingWizard() {
           padding: 0.875rem 1.75rem; border: 0; border-radius: 0.75rem; text-decoration: none; cursor: pointer;
         }
         .cta:disabled { opacity: 0.5; cursor: not-allowed; }
+        .turnstile-box { margin-top: 1rem; display: grid; gap: 0.375rem; justify-items: start; }
         @media (prefers-reduced-motion: reduce) { .wizard-card, .service-option { transition: none; } }
       `}</style>
     </form>

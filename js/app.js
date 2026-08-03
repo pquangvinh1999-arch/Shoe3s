@@ -97,6 +97,21 @@
             else selectedServices.push({ name, id: getServiceByName(name)?.id || null });
         }
 
+        // Turnstile callbacks: lưu token hợp lệ vào hidden input
+        function onTurnstileToken(token) {
+            const input = document.getElementById('turnstile-token');
+            const status = document.getElementById('turnstile-status');
+            if (input) input.value = token;
+            if (status) status.innerText = 'Đã xác minh. Bạn có thể đặt đơn.';
+        }
+
+        function onTurnstileExpired() {
+            const input = document.getElementById('turnstile-token');
+            const status = document.getElementById('turnstile-status');
+            if (input) input.value = '';
+            if (status) status.innerText = 'Xác minh đã hết hạn, vui lòng thực hiện lại.';
+        }
+
         async function submitOrder() {
             if (selectedServices.length === 0) return alert("Anh chọn ít nhất 1 dịch vụ nhé!");
 
@@ -104,7 +119,8 @@
             const pickupAddressInput = document.getElementById('pickup-address');
             const noteInput = document.getElementById('order-note');
 
-            const turnstileToken = (turnstileTokenInput?.value || '').trim() || 'local-demo-token';
+            const turnstileToken = (turnstileTokenInput?.value || '').trim();
+            if (!turnstileToken) return alert("Vui lòng hoàn tất xác minh không phải robot trước khi đặt đơn!");
             const requestPayload = {
                 customer_name: document.getElementById('cus-name').value,
                 phone: document.getElementById('cus-phone').value,

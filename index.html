@@ -15,6 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- SHEETJS -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <!-- CLOUDFLARE TURNSTILE -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
         <link rel="stylesheet" href="css/app.css">
 </head>
@@ -96,10 +98,11 @@
                     <textarea id="order-note" placeholder="Ghi chú kỹ thuật hoặc yêu cầu đặc biệt" rows="3" class="w-full px-4 py-3 rounded-xl border-none bg-white/90 ring-1 ring-slate-200 focus:ring-2 focus:ring-sky-500 outline-none font-bold resize-none"></textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Turnstile token</label>
-                    <input type="text" id="turnstile-token" placeholder="Token tuỳ chọn cho demo/local" class="w-full px-4 py-3 rounded-xl border-none bg-white/90 ring-1 ring-slate-200 focus:ring-2 focus:ring-sky-500 outline-none font-bold">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">Xác minh không phải robot</label>
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAEEz9KpFzEoqK8Y2" data-callback="onTurnstileToken" data-expired-callback="onTurnstileExpired"></div>
+                    <input type="hidden" id="turnstile-token">
+                    <p id="turnstile-status" class="mt-2 text-xs text-slate-500">Vui lòng hoàn tất xác minh trước khi đặt đơn.</p>
                 </div>
-                <p class="mt-2 text-xs text-slate-500">Optional for local/demo mode. Real backend integration should provide a valid token.</p>
             </div>
             <div class="mt-4 text-center">
                 <button onclick="submitOrder()" class="bg-slate-800 text-white px-12 py-4 rounded-full font-extrabold text-lg shadow-2xl hover:scale-105 transition">HOÀN TẤT ĐẶT ĐƠN</button>
