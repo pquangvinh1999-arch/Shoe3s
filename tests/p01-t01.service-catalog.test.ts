@@ -22,6 +22,7 @@ describe('P01-T01 service catalog adapter', () => {
       visualTarget: 'upper',
       category: 'cleaning',
       estimatedHours: 24,
+      description: 'Vệ sinh bề mặt, đế giày và dây giày cho các loại sneaker thông thường.',
     });
   });
 

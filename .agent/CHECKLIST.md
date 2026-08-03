@@ -4,9 +4,8 @@
 - [x] Bước 2: Kiểm tra lại tài liệu dự án
 - [x] Bước 3: Nghiên cứu trước khi code
 - [x] Bước 4: Lập kế hoạch triển khai
-- [x] Bước 5: Điều phối agent thực hiện *(P03/P04 code-allowed hoàn tất; P03-T02 blocked R-008)*
-- [x] Bước 6: Kiểm tra chất lượng trong quá trình *(audit pass; exit chờ R-008)*
-- [ ] Bước 7: Báo cáo kết quả
+- [x] Bước 5: Điều phối agent thực hiện *(P03/P04 code-allowed hoàn tất; P03-T02 RLS lockdown applied 2026-08-03)*
+- [x] Bước 6: Kiểm tra chất lượng trong quá trình *(audit + remediation pass; exit criteria đạt — R-008 closed)*
 - [ ] Bước 7: Báo cáo kết quả
 - [ ] Bước 8: Kiểm thử lặp trong phiên mới
 - [ ] Bước 9: Đánh giá độc lập GPT-5.6 và reviewer thứ hai

@@ -169,7 +169,7 @@ describe('P01-T01 E2E sample', () => {
     expect(orderPayload).toBeTruthy();
     expect(orderPayload.customer_name).toBe('Test User');
     expect(orderPayload.phone).toBe('0123456789');
-    expect(orderPayload.service_ids).toEqual(['service-cleaning']);
+    expect(orderPayload.service_ids).toEqual(['CLEAN_STANDARD']);
     expect(orderPayload.pickup_address).toBe('123 Nguyễn Văn Cừ, Quận 1');
     expect(orderPayload.note).toBe('Giữ kỹ phần đế');
     expect(orderPayload.turnstile_token).toBe('test-token-123');

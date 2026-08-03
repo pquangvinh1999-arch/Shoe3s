@@ -53,7 +53,7 @@ describe('P01-T02 order schema and compatibility adapter', () => {
       { service_id: 'CLEAN_STANDARD', name: 'Giặt hấp & Vệ sinh tiêu chuẩn', qty: 1, priceVnd: 90000, subtotal: 90000 },
       { service_id: 'REPAIR_SOLE', name: 'Dán / Phục hồi đế giày', qty: 1, priceVnd: 200000, subtotal: 200000 },
     ]);
-    expect(total).toBe(168000);
+    expect(total).toBe(290000);
   });
 
   it('builds legacy-compatible order data from request payload', () => {

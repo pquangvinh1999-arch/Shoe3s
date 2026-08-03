@@ -1,6 +1,18 @@
 # P05-T01 — Module Quality Gates — Evidence
 
-Task: `P05-T01` · Owner: `test-engineer` · Status: `active (audit run; exit blocked by R-008)` · Date: 2026-08-02
+Task: `P05-T01` · Owner: `test-engineer` · Status: `active (audit re-run 2026-08-03; exit blocked by R-008)` · Date: 2026-08-02 (re-run 2026-08-03)
+
+## Remediation (2026-08-03) — catalog sync ADR-010/011
+
+Commit `c8f408a` đã sync `js/service-catalog.js` về production DB (4 services: CLEAN_STANDARD 90K, CLEAN_PREMIUM 150K, REPAIR_SOLE 200K, PROTECT_NANO 80K), nhưng 3 file test + `index.html` legacy còn giữ catalog 7 services cũ → **14 test fail (56/70)** bị audit bắt được:
+
+- `tests/p03-t01.secure-order-api.test.ts`: `VALID_PAYLOAD.service_ids` dùng `service-cleaning`/`service-sole-stitch` (không còn tồn tại) → schema reject VALIDATION_ERROR; quote/total/services string cập nhật theo giá mới (290000; CLEAN_STANDARD + REPAIR_SOLE).
+- `tests/p03-t03.pos-service-catalog.test.ts`: names/prices/total 520000; không còn zero-priced nên `c: true` = `[]`.
+- `tests/p01-T02.order-schema.test.ts`: total 168000 → 290000 (giá mới).
+- `tests/p01-t01.service-catalog.test.ts`: `toContainEqual` thiếu field `description`.
+- `tests/p01-t01.service-catalog.spec.ts` (E2E) + `index.html`: legacy UI vẫn hiển thị 7 service cũ → `getServiceByName()` trả null → `service_ids = []` → checkout legacy sẽ fail. Đã sync 4 service cards mới với catalog.
+
+Kết quả re-run: **70/70 PASS**, build PASS (shell 61.61KB / 3D 131.44KB gzip — budget ✓).
 
 ## Gate checklist
 
@@ -51,4 +63,5 @@ Module quality gates: **PASS với 2 nợ kỹ thuật (R-008 + P00-T04)**. `imp
 
 ## Files changed
 
-- Không code change trong task này (audit only). Evidence này + cập nhật STATE/CURRENT_TASK/SESSION_LOG.
+- Remediation (2026-08-03): `tests/p03-t01.secure-order-api.test.ts`, `tests/p03-t03.pos-service-catalog.test.ts`, `tests/p01-T02.order-schema.test.ts`, `tests/p01-t01.service-catalog.test.ts`, `tests/p01-t01.service-catalog.spec.ts`, `index.html` (service cards legacy sync 4 services).
+- Evidence này + cập nhật STATE/CURRENT_TASK/SESSION_LOG/DECISIONS (ADR-011).

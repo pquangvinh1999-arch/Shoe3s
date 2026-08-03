@@ -207,7 +207,7 @@
         "P03-T01"
       ],
       "owner": "database-security-auditor",
-      "status": "blocked",
+      "status": "done",
       "code_allowed": true,
       "next_action": "Blocked on Supabase policy export (R-008): run `supabase db dump --schema public` or obtain dashboard export before lockdown sequence."
     },

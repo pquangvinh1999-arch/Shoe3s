@@ -16,7 +16,7 @@ const RATE_MAX = 20;
 const VALID_PAYLOAD = {
   customer_name: 'Test User',
   phone: '0382878953',
-  service_ids: ['service-cleaning', 'service-sole-stitch'],
+  service_ids: ['CLEAN_STANDARD', 'REPAIR_SOLE'],
   turnstile_token: 'turnstile-token-1',
   idempotency_key: '9f1d7c0e-4c49-4b0d-bdfe-5f3e2519a1a1',
 };
@@ -213,21 +213,21 @@ describe('P03-T01 secure order API', () => {
       expect(body.ok).toBe(true);
       expect(body.order_id).toBe('order-123');
       expect(body.status).toBe('Chờ thanh toán');
-      expect(body.quote.total_vnd).toBe(168000);
+      expect(body.quote.total_vnd).toBe(290000);
       expect(body.quote.items).toEqual([
-        { service_id: 'service-cleaning', name: 'Vệ sinh toàn diện', qty: 1, unit_price_vnd: 69000 },
-        { service_id: 'service-sole-stitch', name: 'Khâu đế', qty: 1, unit_price_vnd: 99000 },
+        { service_id: 'CLEAN_STANDARD', name: 'Giặt hấp & Vệ sinh tiêu chuẩn', qty: 1, unit_price_vnd: 90000 },
+        { service_id: 'REPAIR_SOLE', name: 'Dán / Phục hồi đế giày', qty: 1, unit_price_vnd: 200000 },
       ]);
 
       const insertCall = fetchMock.mock.calls[2];
       expect(insertCall[0]).toContain('/rest/v1/orders');
       const insertBody = JSON.parse(insertCall[1].body)[0];
-      expect(insertBody.total).toBe(168000);
+      expect(insertBody.total).toBe(290000);
       expect(insertBody.status).toBe('Chờ thanh toán');
       expect(insertBody.source).toBe('web-3d-booking');
       expect(insertBody.idempotency_key).toBe(VALID_PAYLOAD.idempotency_key);
       expect(insertBody.idempotency_payload_hash).toMatch(/^[0-9a-f]{64}$/);
-      expect(insertBody.services).toBe('Vệ sinh toàn diện, Khâu đế');
+      expect(insertBody.services).toBe('Giặt hấp & Vệ sinh tiêu chuẩn, Dán / Phục hồi đế giày');
     });
 
     it('replays the original order for the same idempotency key and payload', async () => {
@@ -302,8 +302,8 @@ describe('P03-T01 secure order API', () => {
     it('returns the documented success envelope', async () => {
       const orderData = {
         status: 'Chờ thanh toán',
-        total: 69000,
-        service_items: [{ service_id: 'service-cleaning', name: 'Vệ sinh toàn diện', qty: 1, unit_price_vnd: 69000 }],
+        total: 90000,
+        service_items: [{ service_id: 'CLEAN_STANDARD', name: 'Giặt hấp & Vệ sinh tiêu chuẩn', qty: 1, unit_price_vnd: 90000 }],
       };
       const response = createSuccessResponse('abc', orderData, 'req-1');
       expect(response.status).toBe(200);
@@ -313,7 +313,7 @@ describe('P03-T01 secure order API', () => {
         order_id: 'abc',
         status: 'Chờ thanh toán',
         request_id: 'req-1',
-        quote: { total_vnd: 69000, items: [{ service_id: 'service-cleaning', name: 'Vệ sinh toàn diện', qty: 1, unit_price_vnd: 69000 }] },
+        quote: { total_vnd: 90000, items: [{ service_id: 'CLEAN_STANDARD', name: 'Giặt hấp & Vệ sinh tiêu chuẩn', qty: 1, unit_price_vnd: 90000 }] },
       });
     });
   });

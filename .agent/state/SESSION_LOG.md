@@ -69,3 +69,38 @@ Append compact checkpoints only; do not paste full chat transcripts.
 - Evidence: `.agent/evidence/P05-T01/quality-gates.md`. implementation_gate giữ pending (P03-T02 blocked R-008).
 - Bước 5 (agent coordination): các task code-allowed đã xong hết; Bước 6 audit đã chạy. Chờ R-008 để advance.
 
+
+## 2026-08-03 — ADR-010 resolved; RLS anon probe (P03-T02 prep)
+- Owner xác nhận: production = vmakonkiotjkxlhpjwny; catalog chuẩn = repo (7 services); cung cấp anon key (paste chat).
+- Decode JWT anon: ref khớp production project. Probe REST (PostgREST):
+  - services SELECT: 200 + 4 rows (CLEAN_STANDARD 90K, CLEAN_PREMIUM 150K, REPAIR_SOLE 200K, PROTECT_NANO 80K).
+  - orders/order_items SELECT: 200 [].
+  - anon INSERT orders/services: 401/42501 violates RLS → RLS enabled (anonymous writes blocked).
+  - anon DELETE/PATCH: empty result.
+  - orders schema: NOT NULL customer_name (23502 leak); chưa confirm idempotency_key/source từ REST.
+- Booking API dùng service_role (functions/api/orders.js:167) → không bị RLS chặn.
+- Evidence: .agent/evidence/P03-T02/rls-probe-anon.md. ADR-010 → resolved; STATE notes updated.
+- Còn chờ: policy dump (`supabase db dump --schema public`) để soạn lockdown migration hoàn tất P03-T02.
+
+## 2026-08-03 — P05-T01 remediation: catalog sync ADR-011 (4 services production DB)
+- Commit c8f408a (owner) sync `js/service-catalog.js` → 4 services production DB (CLEAN_STANDARD 90K, CLEAN_PREMIUM 150K, REPAIR_SOLE 200K, PROTECT_NANO 80K), khớp probe RLS. Nhưng 3 file test + index.html legacy giữ 7 services cũ → audit re-run bắt 14 fail (56/70).
+- Fix (remediation thuộc scope P05-T01, tests + legacy UI sync):
+  - p03-t01: VALID_PAYLOAD → [CLEAN_STANDARD, REPAIR_SOLE]; quote/total 290000; services string + createSuccessResponse theo giá mới.
+  - p03-t03: names/prices [90000,150000,200000,80000], c:true = [], total 520000.
+  - p01-T02: total 168000 → 290000. p01-t01: toContainEqual thêm description.
+  - p01-t01.spec.ts E2E + index.html: 7 cards cũ → 4 cards mới (trước đây service_ids = [] → checkout legacy fail).
+- Re-run: `npm test` 70/70 PASS, `npm run build` PASS (shell 61.61KB / 3D 131.44KB gzip). Lưu ý: phải dùng Node 22+ (nvm) — Node 16 codespace default fail vite/vitest (`crypto.getRandomValues`).
+- ADR-011 ghi nhận catalog chuẩn = production DB 4 services; STATE/CURRENT_TASK/evidence P05-T01 cập nhật.
+- Vẫn chờ R-008: `supabase db dump --schema public` từ owner để hoàn tất P03-T02 lockdown migration → mở khóa P05-T01 exit → Bước 7.
+
+## 2026-08-03 — R-008 closed: RLS lockdown applied (P03-T02 done)
+- Owner cấp Supabase PAT (Management API). Dùng `database/query` thay `supabase db dump` (không cần DB password).
+- Schema probe: orders có đủ idempotency_key (uuid), idempotency_payload_hash (text), source, service_items (jsonb) — xác nhận từ trước lockdown.
+- Baseline: 5 policies cũ roles=public (orders ALL authenticated + INSERT with_check true, order_items INSERT with_check true, services SELECT active); grants anon/auth/service_role đầy đủ (default). Probe anon INSERT 42501 nhưng cấu hình mơ hồ → lockdown.
+- Applied `supabase/migrations/20260803_rls_lockdown.sql` (transaction qua Management API):
+  - services: REVOKE write anon/auth; policy SELECT (is_active) anon+auth.
+  - orders: REVOKE hết anon; policies authenticated SELECT/INSERT/UPDATE (admin dashboard + POS insert js/app.js:614); không DELETE cho authenticated.
+  - order_items: REVOKE ALL anon/auth; chỉ service_role.
+- Verify: anon SELECT services 200+4 rows; anon SELECT/INSERT orders 401 42501; anon INSERT order_items 401 42501; pg_policies = 4 policies mới.
+- Booking API (service_role bypass) không ảnh hưởng. Evidence: `.agent/evidence/P03-T02/rls-lockdown-applied.md`; PLAN.json P03-T02 → done.
+- Next: checkpoint P05-T01 (implementation_gate) → Bước 7 progress report. Rotate anon key production (đã paste chat + dùng probe).

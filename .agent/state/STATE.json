@@ -25,12 +25,15 @@
     "P01-T01 research complete: baseline already ships typed catalog + order schema + orders API scaffold; 16 tests pass.",
     "P02-T01 implementation plan approved (plan_gate); evidence at .agent/evidence/P02-T01/.",
     "P03-T01 secure order API complete: Turnstile, idempotency, rate limit, error envelope, safe Telegram; 40 tests pass.",
-    "P03-T02 RLS cutover blocked on R-008 + ADR-010: service key owner cấp trỏ project vmakonkiotjkxlhpjwny (schema legacy, orders thiếu idempotency_key/source, 4 services khác catalog repo); anon key js/app.js trỏ agcvsogtqxoqlhcubghy không expose public.services. Cần owner xác nhận project production + anon key.",
+    "P03-T02 RLS cutover blocked on R-008 + ADR-010: service key owner cấp trỏ project vmakonkiotjkxlhpjwny (schema legacy, orders thiếu idempotency_key/source, 4 services khác catalog repo); anon key js/app.js trỏ agcvsogtqxoqlhcubghy không expose public.services. ADR-010 resolved 2026-08-03: production = vmakonkiotjkxlhpjwny, catalog chuẩn = repo 7 services; chờ owner paste supabase db dump + anon key hợp lệ.",
     "P03-T03 POS service list derived from catalog (getPaymentServices); 45 tests pass.",
     "P04-T01 React/Vite shell + route split complete: lazy chunks, booking shell 61.6KB gzip; 49 tests pass; ADR-007 accepted.",
     "P04-T02 design system + booking funnel complete: 4-step wizard, a11y, idempotent submit via /api/orders, quote from server; 56 tests pass.",
     "P04-T03 adaptive 3D dirty-to-clean scene complete: procedural model (ADR-009, R-009 resolved), lazy chunk 130.6KB gzip, adaptive quality; 64 tests pass.",
     "P04-T04 fallbacks complete: 2D poster khi không có WebGL, render-on-demand cho reduced-motion, slider dùng chung; 70 tests pass.",
-    "P05-T01 module quality gates audit run: bundle trong budget, secret scan PASS, 70/70 tests; exit blocked bởi R-008/ADR-010."
+    "P05-T01 module quality gates audit run: bundle trong budget, secret scan PASS, 70/70 tests; exit blocked bởi R-008/ADR-010.",
+    "P05-T01 remediation (2026-08-03): catalog repo = production DB 4 services (ADR-011, commit c8f408a) làm 14 test fail (56/70) vì P03-T01/P03-T03/P01-T02/P01-T01 + index.html còn dùng 7 services cũ. Đã sync tests + service cards legacy; re-run 70/70 PASS, build PASS (shell 61.61KB/3D 131.44KB gzip).",
+    "P03-T02 RLS probe (2026-08-03, anon key production): services SELECT 200 + 4 rows; orders/order_items SELECT 200 []; anon INSERT orders/services bị chặn 42501 (RLS enabled); DELETE/PATCH trả empty. orders.js dùng service_role key nên booking API không bị chặn. Chờ policy dump (R-008) để hoàn tất lockdown migration.",
+    "P03-T02 LOCKDOWN APPLIED (2026-08-03): owner cấp PAT → Management API query. Schema probe xác nhận orders đủ cột idempotency_key/idempotency_payload_hash/source/service_items. Applied supabase/migrations/20260803_rls_lockdown.sql: services = public SELECT active; orders = authenticated SELECT/INSERT/UPDATE (admin+POS), anon revoke hết; order_items = chỉ service_role. Verify: anon SELECT services 200, anon SELECT/INSERT orders+order_items 401/42501. Booking API (service_role bypass RLS) không ảnh hưởng. P03-T02 → done, R-008 closed."
   ]
 }
