@@ -44,3 +44,7 @@ Use one ADR entry per approved architecture or behavior change.
 3. Owner cung cấp policy export `supabase db dump --schema public` + anon key hợp lệ của project production để test anon path trước lockdown.
 **Implication:** chờ 2 artifact trên để hoàn tất P03-T02; trước khi có, không bật RLS lockdown, giữ anonymous insert (canary tại API).
 **Action:** owner paste output dump + anon key. Sau đó auditor verify anon path: check bảng services readable, orders insert qua /api/orders (service key) thành công.
+
+## ADR-012 — Key rotation deferred to post-completion
+**Status:** decided (2026-08-03, owner) — **giữ nguyên anon key (legacy + publishable) và service_role key đang dùng cho tới khi hoàn thành dự án**; rotate/thay đổi sau khi dự án xong.
+**Impact:** legacy anon key đã lộ trong chat vẫn còn hiệu lực nhưng RLS lockdown đã giảm thiểu rủi ro (anon chỉ SELECT services public); service_role key đã lộ vẫn dùng cho booking API (bắt buộc cho functional). Bỏ requirement "owner revoke legacy anon key ngay" khỏi chặn Bước 12; hoãn sang task rotate sau completion.

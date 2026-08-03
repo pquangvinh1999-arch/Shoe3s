@@ -20,7 +20,6 @@ Task: `P10-T01` · Owner: `project-orchestrator` · Status: `completed (F1-F6 do
 - Production probes: signup → 422; anon SELECT orders → 42501; anon SELECT services → 200; pg_policies = orders admin select/insert/update + services public select + is_admin() fn.
 
 ## Remaining
-- **Revoke legacy anon key cũ qua dashboard** (owner): Management API không hỗ trợ (id `anon` không phải UUID); key cũ vẫn valid (exp 2101) nhưng chỉ SELECT services public + RLS đã lockdown → rủi ro thấp; nên xóa trong Dashboard → Settings → API keys.
-- Rotate legacy service_role key đã lộ trong chat (ADR-010 note) — owner thực hiện trước release.
+- **Key rotation DEFERRED (ADR-012, owner quyết định 2026-08-03)**: giữ nguyên anon + service_role cho tới khi hoàn thành dự án; rotate sau. Legacy anon key đã lộ vẫn valid (exp 2101) nhưng RLS lockdown khóa anon (chỉ SELECT services public) → rủi ro thấp. Ghi chú: publishable key `sb_publishable_WPMLea8mF...` đã dùng cho client admin (js/app.js).
 - Canary POST thật `/api/orders` (cần deploy CF Functions — Bước 12/13).
 - Verify admin dashboard production sau deploy (đơn booking mới hiển thị).
